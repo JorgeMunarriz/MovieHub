@@ -33,6 +33,9 @@ export const updateGenreByID = async (req: Request, res: Response): Promise<Resp
   const { genreID } = req.params;
   const { genre } = req.body;
   try {
+    if(!genre){
+      return res.status(404).send({msg: 'Genres not found'});
+    }
     const genreFound = await GenresModel.findByIdAndUpdate(
       genreID,
       {
