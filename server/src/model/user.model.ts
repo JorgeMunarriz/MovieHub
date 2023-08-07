@@ -1,6 +1,5 @@
 import { Document, model, Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
-import { IGenre } from './genres.model';
 
 interface IUserDocument extends Document {
   name: string;

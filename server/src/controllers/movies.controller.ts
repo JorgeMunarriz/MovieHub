@@ -57,7 +57,9 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
   const { movieID } = req.params;
   const { name, score, year, genres } = req.body;
   try {
-    const movie = await UserModel.findByIdAndUpdate(
+
+    const movie = await MoviesModel.findByIdAndUpdate(movieID,{ $set: { name, score, year, genres }, }, { new: true })
+    await UserModel.findByIdAndUpdate(
       movieID,
       {
         $set: { name, score, year, genres },
@@ -72,13 +74,10 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
 };
 export const deleteMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  const { name, score, year } = req.body;
-  if (!name || !score || !year) {
-    return res.status(404).send({ msg: "Movie not found" });
-    
-  }
+  
   try {
     await UserModel.findByIdAndDelete(movieID);
+    await MoviesModel.findByIdAndDelete(movieID);
     return res.status(200).send({msg: "Deleted movie by ID"});
   } catch (error) {
     console.log(error);
