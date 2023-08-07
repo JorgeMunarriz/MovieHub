@@ -1,14 +1,7 @@
-import config from './config/config'
-import app from './server'
-import connect from  './db/connect'
+import config from "./config/config";
+import app from "./server";
 const PORT = config.app.PORT;
 
-
-
-connect().then(async function onServerStart() {
-    console.log("Connected to database")
-
-    app.listen(PORT, () => {
-        console.log(`Server is listening on port ${PORT}`)
-    })
-})
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
