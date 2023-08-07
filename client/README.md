@@ -55,11 +55,15 @@ git clone https://github.com/JorgeMunarriz/MovieHub_Font-end.git
 ```
 
 ```bash
-cd MovieHub_Front-end
+cd MovieHub
 ```
 
-Install the project dependencies:
 
+Install the project on client dependencies:
+
+```bash
+cd client
+```
 ```bash
 npm install
 ```
@@ -75,6 +79,29 @@ or
 ```bash
 yarn install
 ```
+
+Install the project on server dependencies:
+
+```bash
+cd server
+```
+```bash
+npm install
+```
+or 
+```bash
+npm i
+```
+or 
+```bash
+pnpm install
+```
+or 
+```bash
+yarn install
+```
+
+
 ## How to use
 
 ```bash
