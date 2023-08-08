@@ -8,7 +8,7 @@ export const RegularPages = styled.div`
   width: 100%;
   height: 100%;
   .regularPages__grid{
-    grid-area: 2 / 3 / 10 / 11;
+    grid-area: 2 /1 / 10 / 11;
     display: flex;
     width: 100%;
     height: 100%;

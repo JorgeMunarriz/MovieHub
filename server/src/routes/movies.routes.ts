@@ -7,7 +7,7 @@ const MoviesRouter = Router();
 MoviesRouter
     .get('/', getAllMovies)
     .get('/:movieID', getMovieByID)
-    .post('/:userID', checkTwoCharacters, createMovie)
+    .post('/:userID', createMovie)
     .delete('/:movieID', deleteMovieByID)
     .put('/:movieID', updateMovieByID);
 

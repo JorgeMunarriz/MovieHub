@@ -7,7 +7,7 @@ export const Layout = () => {
     return (
         <RegularPages>
             <Header />
-            <SideBar />
+            {/* <SideBar /> */}
             <main className="regularPages__grid">
                 <Outlet/>                
             </main>

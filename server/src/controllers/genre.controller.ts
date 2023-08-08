@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import GenresModel from "../model/genres.model";
 import prisma from "../db/prismaClient";
 
 export const createGenre = async (req: Request, res: Response): Promise<Response> => {
@@ -8,7 +7,7 @@ export const createGenre = async (req: Request, res: Response): Promise<Response
     const newGenre = await prisma.genres.create({
       data: {genre}
     })
-    return res.status(201).send(newGenre);
+    return res.status(201).send({status:"Success", msg:"Create Succesfully",  newGenre});
   } catch (error) {
    return  res.status(500).send(error);
   }
@@ -20,7 +19,7 @@ export const getGenreByID = async (req: Request, res: Response): Promise<Respons
     const genre = await prisma.genres.findUnique({
       where: {id: genreID}
     });
-   return res.status(200).send(genre);
+   return res.status(200).send({status:"Success", msg:"Get Genre By Id Succesfully", genre});
   } catch (error) {
    return res.status(500).send(error);
   }
@@ -28,7 +27,7 @@ export const getGenreByID = async (req: Request, res: Response): Promise<Respons
 export const getAllGenre = async (req: Request, res: Response): Promise<Response> => {
   try {
     const genre = await prisma.genres.findMany()
-   return res.status(200).send(genre);
+   return res.status(200).send({status:"Success", msg:"Create Succesfully", genre});
   } catch (error) {
    return res.status(500).send(error);
   }
@@ -47,16 +46,6 @@ export const updateGenreByID = async (req: Request, res: Response): Promise<Resp
         data:{ genre }      
     })
     
-    
-    // GenresModel.findByIdAndUpdate(
-    //   genreID,
-    //   {
-    //     $set: { genre },
-    //   },
-    //   {
-    //     new: true,
-    //   }
-    // );
    return res.status(200).send(genreFound);
   } catch (error) {
    return res.status(500).send(error);
@@ -72,7 +61,7 @@ export const deleteGenreByID = async (req: Request, res: Response): Promise<Resp
     })
     
     // GenresModel.findByIdAndDelete(genreID);
-   return res.status(200).send(deleteGenre);
+   return res.status(200).send({msg: 'Genre Deleted', deleteGenre});
   } catch (error) {
    return res.status(500).send(error);
   }

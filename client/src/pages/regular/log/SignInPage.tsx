@@ -1,16 +1,9 @@
-// import { useRef, useEffect, startTransition, lazy, Suspense, LazyExoticComponent, ComponentType  } from "react";
-// import { useNavigate } from "react-router";
-// import { useState, ChangeEventHandler, MouseEventHandler } from "react";
-// import { UserFormState } from "../../types/authContext";
-
 import { useEffect, useState } from 'react';
 import { getAllUsers, getUserByID, UserProps } from '../../../api/fetchUrlUser';
 import { LoginPageStyles } from '..';
 import { Link } from 'react-router-dom';
 
 // type User = UserFormState & { id: number };
-
-
 // const LazyInput: LazyExoticComponent<ComponentType<any>> = lazy(() => {
 //   return new Promise((resolve) => {
 //     setTimeout(() => {
@@ -97,7 +90,7 @@ import { Link } from 'react-router-dom';
 // };
 
 
-export const LogingPage = () => {
+export const SignInPage = () => {
   const {name, setName }= useState<UserProps>()
   
 
@@ -131,8 +124,8 @@ useEffect(() => {
         <input className='loginpage__divInputs-input' type="password" name="UserConfirmPassword" id="InputConfirmPassword" />
       </div>
       <div className='loginpage__divButtons'>
-        <button type="button" className="loginpage__divButtons-button">Log In</button>
-        <p className='loginpage__divButtons-text'>Do you not have an account?, <Link to={"/signin"} className='loginpage__divButtons-text-link'>Sign In</Link></p>
+        <button type="button" className="loginpage__divButtons">Button</button>
+        <p>Do you have an account?, <Link to={"/login"}>Log In</Link></p>
         
       </div>
 

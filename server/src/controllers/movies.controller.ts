@@ -1,59 +1,75 @@
 import { Request, Response } from "express";
-import { GenresModel, MoviesModel, UserModel } from "../model";
 import prisma from "../db/prismaClient";
-import { updateUserByID } from './user.controller';
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
-  const { name, year, score, genres } = req.body;
+  const { title, year, score, genres } = req.body;
   const { userID } = req.params;
+
   try {
+    const genreIDs: string[] = [];
+
+    for (const genreName of genres) {
+      let genre = await prisma.genres.findUnique({ where: { genre: genreName } });
+
+      if (!genre) {
+        genre = await prisma.genres.create({ data: { genre: genreName } });
+      }
+
+      genreIDs.push(genre.id);
+    }
+
     const newMovie = await prisma.movies.create({
-      data: { name, year, score, genres,
+      data: {
+        title,
+        year,
+        score,
+        // Connect genres using IDs
+        genres: {
+          connect: genreIDs.map((genreID: string) => ({ id: genreID })),
+        },
         users: {
           connect: {
-            id: userID
-          }
-        }
-      }
-    })
+            id: userID,
+          },
+        },
+        // Store genres as an array of names
+        genresArray: genres,
+      },
+      include: {
+        genres: true,
+        users: true
+      },
       
-      // { genre: { $in: genres.map((genres: { genre: any; }) => genres.genre)}})
-    // Extract the genre ids from the found genres
+    });
+    await prisma.users.update({
+    where: {id: userID},
+    data: {
+      moviesArray: {push: newMovie.title}
+    }
+    })
 
-
-    // const genreNames = foundGenres.map((genre) => genre);
-    
-    // const newMovie = await MoviesModel.create({ name, year, score, genres: genreNames });
-
-    // await UserModel.findByIdAndUpdate(
-    //    userID,
-    //   {
-    //     $push: { movies:{_id: newMovie._id, name: newMovie.name, genres: newMovie.genres}}
-    //   }
-    // );
-
-   return res.status(201).send(newMovie);
+    return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
 export const getMovieByID = async (req: Request, res: Response): Promise<Response> => {
-  const { movieID } = req.params;  
+  const { movieID } = req.params;
   try {
     const movie = await prisma.movies.findUnique({
-      where: {id: movieID},
-      include: {genres: true}
-    })
-    
-    if (!movie){
-      return res.status(404).send({msg: "Movie not found"});
+      where: { id: movieID },
+      include: { genres: true },
+    });
+
+    if (!movie) {
+      return res.status(404).send({ msg: "Movie not found" });
     }
     //Fetch the genres using genreIds
     // const genreIds = movie.genres
     // const genres = await GenresModel.find({_id: { $in: genreIds }}, {_id: 1, genre: 1  })
     // movie.genres = genres
-    
+
     return res.status(200).send(movie);
   } catch (error) {
     console.log(error);
@@ -64,14 +80,10 @@ export const getMovieByID = async (req: Request, res: Response): Promise<Respons
 export const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
   try {
     const movies = await prisma.movies.findMany({
-      select: {
-        id: true,
-        name: true,
-        score: true,
-        year: true,
-        genres: true
-      }
-    })
+      include: {
+        genres: true,
+      },
+    });
 
     // const moviesWithGenres = await Promise.all(
     //   movies.map(async (movie) => {
@@ -88,49 +100,59 @@ export const getAllMovies = async (req: Request, res: Response): Promise<Respons
   }
 };
 
-
 export const updateMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  const { name, score, year, genres } = req.body;
+  const { title, score, year, genres } = req.body;
   try {
-
     const movie = await prisma.movies.update({
-      where: {id: movieID},
-      data: {name, score, year, genres},
-      
-    })
-    await prisma.users.update({
-      where: {id: movieID},
-      data: {name}
-    })
+      where: { id: movieID },
+      data: { title, score, year, genres },
+    });
     
-    // MoviesModel.findByIdAndUpdate(movieID,{ $set: { name, score, year, genres }, }, { new: true })
-    // await UserModel.findByIdAndUpdate(
-    //   movieID,
-    //   {
-    //     $set: { name, score, year, genres },
-    //   },
-    //   { new: true }
-    // );
     return res.status(200).send(movie);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
   }
 };
+
 export const deleteMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  
+
   try {
-    await prisma.users.delete({
-      where: {id: movieID}
-    })
+    const movie = await prisma.movies.findUnique({
+      where: { id: movieID },
+      include: {
+        users: true,
+      },
+    });
+
+    if (!movie) {
+      return res.status(404).send({ status: "Error", msg: "Movie not found" });
+    }
+
+    const userID = movie.users?.id;
+
+    if (userID) {
+      // Remove the movie's title from the user's moviesArray
+      await prisma.users.update({
+        where: { id: userID },
+        data: {
+          moviesArray: { set: movie.users?.moviesArray.filter((title: string) => title !== movie.title) },
+        },
+      });
+    }
+
+    // Delete the movie
     await prisma.movies.delete({
-      where: {id: movieID}
-    })
-    return res.status(200).send({msg: "Deleted movie by ID"});
+      where: { id: movieID },
+    });
+
+    return res.status(200).send({ status: "Success", msg: "Deleted movie by ID" });
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
   }
 };
+
+

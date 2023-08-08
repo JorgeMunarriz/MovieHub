@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import UserModel from "../model/user.model";
 import prisma from "../db/prismaClient";
 
 export const createUser = async (req: Request, res: Response): Promise<Response> => {
-  const { name, email, password } = req.body;
+  const { name, email, password, moviesArray } = req.body;
 
   try {
     if (!name || !email || !password) {
@@ -11,7 +10,7 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
     }
 
     const newUser = await prisma.users.create({
-      data: { name, email, password },
+      data: { name, email, password, moviesArray },
     });
 
     return res.status(201).json(newUser);
@@ -22,17 +21,17 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
 
 export const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const allUsers = await prisma.users.findMany();
+    const allUsers = await prisma.users.findMany({
+      include:{
+        movies: {
+          include: {
+            genres: true
+          }
+        }
+      }
+    });
 
-    // find().populate({
-    //     path: "movies",
-    //     populate: {
-    //         path: "genres",
-    //         select: "_id genre",
-    //     },
-    // });
-
-    return res.status(200).json(allUsers);
+    return res.status(200).json({status:"Success", msg:"Get All Users Succesfully",  allUsers});
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -42,16 +41,15 @@ export const getUserByID = async (req: Request, res: Response): Promise<Response
   const { userID } = req.params;
   try {
     const userById = await prisma.users.findUnique({
-        where: { id: userID}
+        where: { id: userID},
+        include: {
+          movies: {
+            include: {
+              genres: true
+            }
+          }
+        }
     })
-    
-    // .populate({
-    //   path: "movies",
-    //   populate: {
-    //     path: "genres",
-    //     select: "_id genre",
-    //   },
-    // });
 
     return res.status(200).json(userById);
   } catch (error) {
@@ -66,10 +64,9 @@ export const updateUserByID = async (req: Request, res: Response): Promise<Respo
     const user = await prisma.users.update({
         where: { id: userID },
         data: { name, email, password}
-    });
-        
-        // userID, { $set: { name, email, password } }, { new: true });
-    return res.status(200).json(user);
+    });        
+  
+    return res.status(200).json({status:"Success", msg:"Get User By Id Succesfully",  user});
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -77,13 +74,50 @@ export const updateUserByID = async (req: Request, res: Response): Promise<Respo
 
 export const deleteUserByID = async (req: Request, res: Response): Promise<Response> => {
   const { userID } = req.params;
-
   try {
+    const user = await prisma.users.findUnique({
+      where: { id: userID },
+      include: {
+        movies: {
+          include: {
+            genres: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ status: "Error", msg: "User not found" });
+    }
+
+    // Delete each movie and update associated genres
+    for (const movie of user.movies) {
+      // Update genres by removing the movie's reference
+      await prisma.genres.updateMany({
+        where: {
+          moviesId: movie.id,
+        },
+        data: {
+          moviesId: null,  // Disconnect the movie
+        },
+      });
+
+      // Delete the movie
+      await prisma.movies.delete({
+        where: { id: movie.id },
+      });
+    }
+
+    // Delete the user
     await prisma.users.delete({
-        where: {id: userID}
-    })
-    return res.status(200).json();
+      where: { id: userID },
+    });
+
+    return res.status(200).json({ status: "Success", msg: "Delete User" });
   } catch (error) {
     return res.status(500).json(error);
   }
 };
+
+
+
