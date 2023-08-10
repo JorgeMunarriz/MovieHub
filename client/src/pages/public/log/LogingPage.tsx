@@ -1,16 +1,13 @@
+import { useEffect } from 'react';
+import { getAllUsers, getUserByID} from '../../../api/fetchUrlUser';
+import { LoginPageStyles } from '..';
+import { Link } from 'react-router-dom';
+import {useAuth0} from '@auth0/auth0-react';
 // import { useRef, useEffect, startTransition, lazy, Suspense, LazyExoticComponent, ComponentType  } from "react";
 // import { useNavigate } from "react-router";
 // import { useState, ChangeEventHandler, MouseEventHandler } from "react";
 // import { UserFormState } from "../../types/authContext";
-
-import { useEffect, useState } from 'react';
-import { getAllUsers, getUserByID, UserProps } from '../../../api/fetchUrlUser';
-import { LoginPageStyles } from '..';
-import { Link } from 'react-router-dom';
-
 // type User = UserFormState & { id: number };
-
-
 // const LazyInput: LazyExoticComponent<ComponentType<any>> = lazy(() => {
 //   return new Promise((resolve) => {
 //     setTimeout(() => {
@@ -98,8 +95,9 @@ import { Link } from 'react-router-dom';
 
 
 export const LogingPage = () => {
-  const {name, setName }= useState<UserProps>()
-  
+ // const {name, setName }= useState<UserProps>()
+  const {loginWithRedirect} = useAuth0();
+
 
 useEffect(() => {
   getAllUsers()
@@ -132,9 +130,16 @@ useEffect(() => {
       </div>
       <div className='loginpage__divButtons'>
         <button type="button" className="loginpage__divButtons-button">Log In</button>
-        <p className='loginpage__divButtons-text'>Do you not have an account?, <Link to={"/signin"} className='loginpage__divButtons-text-link'>Sign In</Link></p>
+        <p className='loginpage__divButtons-text'>Do you not have an account?, <Link to={"/signin"} className='loginpage__divButtons-text-link'>Sign In</Link></p>        
+      </div>
+      <div className='loginpage__divButtons'>
+        <hr />
+        <h5>Or use Google, Github or Facebook</h5>
+        <button type="button" className="loginpage__divButtons-button" onClick={()=> loginWithRedirect()}>Log In with Google</button>
+
         
       </div>
+
 
 
     </LoginPageStyles>

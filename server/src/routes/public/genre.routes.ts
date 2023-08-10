@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { createGenre, deleteGenreByID, getAllGenre, getGenreByID, updateGenreByID } from '../controllers/genre.controller';
+import { createGenre, deleteGenreByID, getAllGenre, getGenreByID, updateGenreByID } from '../../controllers/';
 
 const GenresRouter = Router();
 

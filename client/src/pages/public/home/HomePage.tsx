@@ -1,4 +1,3 @@
-import React from "react";
 import { Cards } from "../../../components";
 import { HomePageStyles } from "./homepage.styles";
 

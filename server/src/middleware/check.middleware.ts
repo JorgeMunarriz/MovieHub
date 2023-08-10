@@ -16,7 +16,7 @@ export const checkTwoCharacters = (req: Request, res: Response, next: NextFuncti
     const {name} = req.body;
 
     if (name.length < 2) {
-        res.status(400).send({error: 'Name must be at least 4 characters long'});
+        res.status(400).send({error: 'Name must be at least 2 characters long'});
         return;
     }
 

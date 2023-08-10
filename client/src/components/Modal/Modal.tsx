@@ -5,17 +5,13 @@ import { IoAddCircleOutline} from 'react-icons/io5'
 
 export const Modal = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
-    function openModal() {
-        setIsOpen(true);
-      }
-
-      function closeModal() {
-        setIsOpen(false);
+    function toogleModal() {
+        setIsOpen(!modalIsOpen);
       }
   return (
 
     <ModalStyles>
-      <button className="modal__btn-open" onClick={openModal}><IoAddCircleOutline/> Add </button>
+      <button className="modal__btn-open" onClick={toogleModal}><IoAddCircleOutline/> Add </button>
       {modalIsOpen && (
         <ModalContainer>
           <ModalContent>
@@ -41,7 +37,7 @@ export const Modal = () => {
                 </div>
                 <button className="form__modal-btnAddMovie" type="submit">Add Movie</button>
             </form>
-            <ModalButton onClick={closeModal}>Close Modal</ModalButton>
+            <ModalButton onClick={toogleModal}>Close Modal</ModalButton>
           </ModalContent>
         </ModalContainer>
       )}

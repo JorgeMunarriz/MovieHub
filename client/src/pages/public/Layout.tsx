@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { RegularPages } from "."
+import { RegularPages } from "../index"
 import {  Header, SideBar, Footer } from "../../components"
 
 
