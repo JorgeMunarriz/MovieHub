@@ -31,7 +31,7 @@ export const getAllUsers = async (req: Request, res: Response): Promise<Response
       }
     });
 
-    return res.status(200).json({status:"Success", msg:"Get All Users Succesfully",  allUsers});
+    return res.status(200).json(allUsers);
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -61,12 +61,12 @@ export const updateUserByID = async (req: Request, res: Response): Promise<Respo
   const { userID } = req.params;
   const { name, email, password } = req.body;
   try {
-    const user = await prisma.users.update({
+    const userById = await prisma.users.update({
         where: { id: userID },
         data: { name, email, password}
     });        
   
-    return res.status(200).json({status:"Success", msg:"Get User By Id Succesfully",  user});
+    return res.status(200).json(userById);
   } catch (error) {
     return res.status(500).json(error);
   }

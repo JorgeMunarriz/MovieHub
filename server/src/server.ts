@@ -1,16 +1,25 @@
-import express from 'express'
-import { UserRouter, MoviesRouter, GenresRouter, RequestRouter } from './routes';
-import morgan from 'morgan';
-import cors from 'cors';
-
-const app = express()
+import express from "express";
+import { UserRouter, MoviesRouter, GenresRouter, RequestRouter } from "./routes";
+import morgan from "morgan";
+import cors from "cors";
+import helmet from "helmet";
+import { checkJwtMiddleware } from "./middleware/checkjwt.middleware";
+import { errorHandler } from "./middleware/error.middleware";
+import fileUpload from 'express-fileupload';
+const app = express();
 app
-    .use(cors())
-    .use(morgan("dev"))
-    .use(express.json())
-    .use("/api", RequestRouter)
-    // .use("/users", UserRouter)
-    // .use("/movies", MoviesRouter)
-    // .use("/genres", GenresRouter)
-
- export default app;
+  .use(cors())
+  .use(morgan("dev"))
+  .use(helmet())
+  .use(express.json())
+  .use(
+    fileUpload({
+      useTempFiles: true,
+      tempFileDir: "./uploads",
+    })
+  )
+  .use("/users", UserRouter)
+  .use("/movies", MoviesRouter)
+  .use("/genres", GenresRouter)
+  .use(errorHandler);
+export default app;

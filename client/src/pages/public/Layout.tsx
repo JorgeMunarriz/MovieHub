@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import { RegularPages } from "../index"
-import {  Header, SideBar, Footer } from "../../components"
+import {  Header, Footer } from "../../components"
 
 
 export const Layout = () => {

@@ -1,6 +1,5 @@
 import {Router} from 'express'
-import { checkTwoCharacters } from '../../middleware/check.middleware';
-import { createMovie, deleteMovieByID, getAllMovies, getMovieByID, updateMovieByID } from '../../controllers/';
+import { createMovie, deleteMovieByID, getAllMovies, getMovieByID, updateMovieByID } from '../../controllers';
 
 const MoviesRouter = Router();
 

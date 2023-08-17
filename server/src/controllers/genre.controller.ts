@@ -19,7 +19,7 @@ export const getGenreByID = async (req: Request, res: Response): Promise<Respons
     const genre = await prisma.genres.findUnique({
       where: {id: genreID}
     });
-   return res.status(200).send({status:"Success", msg:"Get Genre By Id Succesfully", genre});
+   return res.status(200).send(genre);
   } catch (error) {
    return res.status(500).send(error);
   }
@@ -27,7 +27,7 @@ export const getGenreByID = async (req: Request, res: Response): Promise<Respons
 export const getAllGenre = async (req: Request, res: Response): Promise<Response> => {
   try {
     const genre = await prisma.genres.findMany()
-   return res.status(200).send({status:"Success", msg:"Create Succesfully", genre});
+   return res.status(200).send(genre);
   } catch (error) {
    return res.status(500).send(error);
   }

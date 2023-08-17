@@ -1,9 +1,16 @@
 import { Request, Response } from "express";
 import prisma from "../db/prismaClient";
+import { uploadImage } from "../utils/cloudinary";
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
-  const { title, year, score, genres } = req.body;
+  let { title, year, score, genres } = req.body;
+
   const { userID } = req.params;
+
+  if (typeof title !== "string") title = title.toString();
+  if (typeof year !== "number") year = Number(year);
+  if (typeof score !== "number") score = Number(score);
+  if (!Array.isArray(genres)) genres = [genres];
 
   try {
     const genreIDs: string[] = [];
@@ -16,6 +23,11 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
       }
 
       genreIDs.push(genre.id);
+    }
+    const imageVerification = req.files?.image;
+    console.log(imageVerification);
+    if (imageVerification) {
+      //const imageUploaded = await uploadImage(imageVerification.tempFilePath)
     }
 
     const newMovie = await prisma.movies.create({
@@ -37,16 +49,15 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
       },
       include: {
         genres: true,
-        users: true
+        users: true,
       },
-      
     });
     await prisma.users.update({
-    where: {id: userID},
-    data: {
-      moviesArray: {push: newMovie.title}
-    }
-    })
+      where: { id: userID },
+      data: {
+        moviesArray: { push: newMovie.title },
+      },
+    });
 
     return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
   } catch (error) {
@@ -108,7 +119,7 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
       where: { id: movieID },
       data: { title, score, year, genres },
     });
-    
+
     return res.status(200).send(movie);
   } catch (error) {
     console.log(error);
@@ -154,5 +165,3 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
     return res.status(500).send(error);
   }
 };
-
-

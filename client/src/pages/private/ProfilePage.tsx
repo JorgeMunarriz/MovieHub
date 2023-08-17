@@ -4,13 +4,14 @@ import { LogOutButton, Profile } from '../../components'
 
 export const ProfilePage = () => {
   const {isAuthenticated} = useAuth0()
+
+  
   return (
     <>
       
             {  isAuthenticated ? (
                 <>
                 <Profile/>
-                <LogOutButton/>
                 </>
               ): (
                 <LogOutButton/>
