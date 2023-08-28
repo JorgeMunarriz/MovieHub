@@ -2,15 +2,22 @@ import { Request, Response } from "express";
 import prisma from "../db/prismaClient";
 
 export const createUser = async (req: Request, res: Response): Promise<Response> => {
-  const { name, email, password, moviesArray } = req.body;
+  const { name, email, moviesArray } = req.body;
 
   try {
-    if (!name || !email || !password) {
+    if (!name || !email) {
       return res.status(400).json({ error: "Missing required fields" });
-    }
+    }    
+    // Check if a user with the given email already exists
+    const existingUser = await prisma.users.findUnique({
+      where: { email },
+    });
 
+    if (existingUser) {
+      return res.status(409).json({ error: "User with this email already exists" });
+    }
     const newUser = await prisma.users.create({
-      data: { name, email, password, moviesArray },
+      data: { name, email, moviesArray },
     });
 
     return res.status(201).json(newUser);
@@ -22,13 +29,13 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
 export const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const allUsers = await prisma.users.findMany({
-      include:{
+      include: {
         movies: {
           include: {
-            genres: true
-          }
-        }
-      }
+            genres: true,
+          },
+        },
+      },
     });
 
     return res.status(200).json(allUsers);
@@ -41,15 +48,15 @@ export const getUserByID = async (req: Request, res: Response): Promise<Response
   const { userID } = req.params;
   try {
     const userById = await prisma.users.findUnique({
-        where: { id: userID},
-        include: {
-          movies: {
-            include: {
-              genres: true
-            }
-          }
-        }
-    })
+      where: { id: userID },
+      include: {
+        movies: {
+          include: {
+            genres: true,
+          },
+        },
+      },
+    });
 
     return res.status(200).json(userById);
   } catch (error) {
@@ -62,10 +69,10 @@ export const updateUserByID = async (req: Request, res: Response): Promise<Respo
   const { name, email, password } = req.body;
   try {
     const userById = await prisma.users.update({
-        where: { id: userID },
-        data: { name, email, password}
-    });        
-  
+      where: { id: userID },
+      data: { name, email },
+    });
+
     return res.status(200).json(userById);
   } catch (error) {
     return res.status(500).json(error);
@@ -98,7 +105,7 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
           moviesId: movie.id,
         },
         data: {
-          moviesId: null,  // Disconnect the movie
+          moviesId: null, // Disconnect the movie
         },
       });
 
@@ -119,5 +126,27 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
   }
 };
 
+export const deleteUsers = async (req: Request, res: Response): Promise<Response> => {
+  const { email } = req.params;
+  
+  try {
+    // Find the user by their email
+    const user = await prisma.users.findUnique({
+      where: { email: email },
+    });
 
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Delete the user using their MongoDB ObjectId
+    await prisma.users.delete({
+      where: { id: email }, // Convert the id to an ObjectID
+    });
+  
+    return res.status(200).json({ status: "Success", msg: "Delete User" });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 

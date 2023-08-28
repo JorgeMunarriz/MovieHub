@@ -11,6 +11,8 @@ export const HomePageStyles = styled.div`
     text-align: center;
     &-title{
         font-size: 2rem;
+        color: rgba(250, 250, 250, 0.6);
+        text-decoration: underline;
     }
   }
   .homePage__main{

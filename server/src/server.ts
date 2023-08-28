@@ -1,5 +1,5 @@
 import express from "express";
-import { UserRouter, MoviesRouter, GenresRouter, RequestRouter } from "./routes";
+import { UserRouter, MoviesRouter, GenresRouter, PublicMoviesRouter } from "./routes";
 import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
@@ -18,6 +18,7 @@ app
       tempFileDir: "./uploads",
     })
   )
+  .use("/publicmovies", PublicMoviesRouter)
   .use("/users", UserRouter)
   .use("/movies", MoviesRouter)
   .use("/genres", GenresRouter)

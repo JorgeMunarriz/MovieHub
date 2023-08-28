@@ -10,7 +10,6 @@ datasource db {
 model Users {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  password    String
   email       String   @unique
   movies      Movies[]
   moviesArray String[]
@@ -23,6 +22,7 @@ model Movies {
   title       String
   score       Int
   year        Int
+  country     String?
   genres      Genres[]
   genresArray String[]
   createdAt   DateTime? @default(now())

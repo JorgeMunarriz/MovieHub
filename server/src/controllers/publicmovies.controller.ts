@@ -3,14 +3,13 @@ import prisma from "../db/prismaClient";
 import { uploadImage } from "../utils/cloudinary";
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
-  let { title, year, score, country, genres } = req.body;
+  let { title, year, score, genres } = req.body;
 
   const { userID } = req.params;
 
   if (typeof title !== "string") title = title.toString();
   if (typeof year !== "number") year = Number(year);
   if (typeof score !== "number") score = Number(score);
-  if (typeof country !== "string") country = country.toString();
   if (!Array.isArray(genres)) genres = [genres];
 
   try {
@@ -36,7 +35,6 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
         title,
         year,
         score,
-        country,
         // Connect genres using IDs
         genres: {
           connect: genreIDs.map((genreID: string) => ({ id: genreID })),
@@ -115,11 +113,11 @@ export const getAllMovies = async (req: Request, res: Response): Promise<Respons
 
 export const updateMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  const { title, score, year, country, genres } = req.body;
+  const { title, score, year, genres } = req.body;
   try {
     const movie = await prisma.movies.update({
       where: { id: movieID },
-      data: { title, score, year, country, genres },
+      data: { title, score, year, genres },
     });
 
     return res.status(200).send(movie);
