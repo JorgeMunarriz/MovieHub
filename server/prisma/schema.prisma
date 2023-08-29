@@ -22,7 +22,7 @@ model Movies {
   title       String
   score       Int
   year        Int
-  country     String?
+  country     String
   genres      Genres[]
   genresArray String[]
   createdAt   DateTime? @default(now())
@@ -33,18 +33,35 @@ model Movies {
   imageId     String?   @db.ObjectId
 }
 
+model Publicmovies {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  score       Int
+  year        Int
+  country     String
+  genres      Genres[]
+  genresArray String[]
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  image       Image?    @relation(fields: [imageId], references: [id])
+  imageId     String?   @db.ObjectId
+}
+
 model Genres {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  genre     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  movies    Movies?  @relation(fields: [moviesId], references: [id])
-  moviesId  String?  @db.ObjectId
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  genre          String        @unique
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  movies         Movies?       @relation(fields: [moviesId], references: [id])
+  moviesId       String?       @db.ObjectId
+  Publicmovies   Publicmovies? @relation(fields: [publicmoviesId], references: [id])
+  publicmoviesId String?       @db.ObjectId
 }
 
 model Image {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  public_id  String
-  secure_url String
-  movies     Movies[]
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  public_id    String
+  secure_url   String
+  movies       Movies[]
+  Publicmovies Publicmovies[]
 }

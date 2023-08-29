@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import prisma from "../db/prismaClient";
 import { uploadImage } from "../utils/cloudinary";
 
-export const createMovie = async (req: Request, res: Response): Promise<Response> => {
-  let { title, year, score, genres } = req.body;
+export const createPublicMovie = async (req: Request, res: Response): Promise<Response> => {
+  let { title, year, score, country, genres } = req.body;
 
-  const { userID } = req.params;
 
   if (typeof title !== "string") title = title.toString();
   if (typeof year !== "number") year = Number(year);
   if (typeof score !== "number") score = Number(score);
+  if (typeof country !== "string") country = country.toString();
   if (!Array.isArray(genres)) genres = [genres];
 
   try {
@@ -30,45 +30,35 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
       //const imageUploaded = await uploadImage(imageVerification.tempFilePath)
     }
 
-    const newMovie = await prisma.movies.create({
+    const newMovie = await prisma.publicmovies.create({
       data: {
         title,
         year,
         score,
+        country,
         // Connect genres using IDs
         genres: {
           connect: genreIDs.map((genreID: string) => ({ id: genreID })),
-        },
-        users: {
-          connect: {
-            id: userID,
-          },
         },
         // Store genres as an array of names
         genresArray: genres,
       },
       include: {
         genres: true,
-        users: true,
       },
     });
-    await prisma.users.update({
-      where: { id: userID },
-      data: {
-        moviesArray: { push: newMovie.title },
-      },
-    });
+    
 
     return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(501).send(error);
   }
 };
 
-export const getMovieByID = async (req: Request, res: Response): Promise<Response> => {
+export const getPublicMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
   try {
-    const movie = await prisma.movies.findUnique({
+    const movie = await prisma.publicmovies.findUnique({
       where: { id: movieID },
       include: { genres: true },
     });
@@ -88,9 +78,9 @@ export const getMovieByID = async (req: Request, res: Response): Promise<Respons
   }
 };
 
-export const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
+export const getPublicAllMovies = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const movies = await prisma.movies.findMany({
+    const movies = await prisma.publicmovies.findMany({
       include: {
         genres: true,
       },
@@ -111,11 +101,11 @@ export const getAllMovies = async (req: Request, res: Response): Promise<Respons
   }
 };
 
-export const updateMovieByID = async (req: Request, res: Response): Promise<Response> => {
+export const updatePublicMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
   const { title, score, year, genres } = req.body;
   try {
-    const movie = await prisma.movies.update({
+    const movie = await prisma.publicmovies.update({
       where: { id: movieID },
       data: { title, score, year, genres },
     });
@@ -127,31 +117,16 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
   }
 };
 
-export const deleteMovieByID = async (req: Request, res: Response): Promise<Response> => {
+export const deletePublicMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
 
   try {
-    const movie = await prisma.movies.findUnique({
-      where: { id: movieID },
-      include: {
-        users: true,
-      },
+    const movie = await prisma.publicmovies.findUnique({
+      where: { id: movieID }
     });
 
     if (!movie) {
       return res.status(404).send({ status: "Error", msg: "Movie not found" });
-    }
-
-    const userID = movie.users?.id;
-
-    if (userID) {
-      // Remove the movie's title from the user's moviesArray
-      await prisma.users.update({
-        where: { id: userID },
-        data: {
-          moviesArray: { set: movie.users?.moviesArray.filter((title: string) => title !== movie.title) },
-        },
-      });
     }
 
     // Delete the movie

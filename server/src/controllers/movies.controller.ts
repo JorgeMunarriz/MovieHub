@@ -98,15 +98,6 @@ export const getAllMovies = async (req: Request, res: Response): Promise<Respons
       },
     });
 
-    // const moviesWithGenres = await Promise.all(
-    //   movies.map(async (movie) => {
-    //     const genreIds = movie.genres;
-    //     const genres = await GenresModel.find({ _id: { $in: genreIds } }, { _id: 1, genre: 1 });
-    //     movie.genres = genres;
-    //     return movie.toObject();
-    //   })
-    // );
-
     return res.status(200).send(movies);
   } catch (error) {
     return res.status(500).send(error);
@@ -167,3 +158,38 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
     return res.status(500).send(error);
   }
 };
+// export const deleteAllMovies = async (req: Request, res: Response): Promise<Response> => {
+//   const { movieID } = req.params;
+
+//   try {
+//     const movie = await prisma.movies.findMany({
+//       include: {
+//         users: true,
+//       },
+//     });
+
+    
+
+//     const userID = users.
+
+//     if (userID) {
+//       // Remove the movie's title from the user's moviesArray
+//       await prisma.users.update({
+//         where: { id: userID },
+//         data: {
+//           moviesArray: { set: movie.users?.moviesArray.filter((title: string) => title !== movie.title) },
+//         },
+//       });
+//     }
+
+//     // Delete the movie
+//     await prisma.movies.deleteMany({
+      
+//     });
+
+//     return res.status(200).send({ status: "Success", msg: "Deleted movies" });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).send(error);
+//   }
+// };

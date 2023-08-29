@@ -1,3 +1,4 @@
+export * from './GetMovies';
 export * from './PublicDataApi';
 export * from './TestApi';
 export * from './fetchUrlMovies';

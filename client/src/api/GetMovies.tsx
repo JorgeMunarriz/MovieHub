@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { getDataApiPublic } from "./getDataApi";
+import { getDataApi } from "./getDataApi";
 import { Cards } from "../components/Cards/Cards";
-// import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export interface UserTypes {
+interface UserTypes {
   id: string;
   name: string;
   email: string;
   password: string;
   movies: string[];
 }
-export interface MoviesType {
+interface MoviesType {
   id: string;
   title: string;
   score: number;
@@ -24,7 +24,7 @@ export interface MoviesType {
   usersId: string;
 }
 
-export interface GenreType {
+interface GenreType {
   id: string;
   genre: string;
   createdAt: string;
@@ -32,38 +32,38 @@ export interface GenreType {
   moviesId: string[];
 }
 
-export const PublicDataApi = () => {
-  // const [user, setUser] = useState<UserTypes[]>([]);
+export const GetMovies = () => {
+  const [user, setUser] = useState<UserTypes[]>([]);
   const [movies, setMovies] = useState<MoviesType[]>([]);
-  // const [genres, setGenres] = useState<GenreType[]>([]);
+  const [genres, setGenres] = useState<GenreType[]>([]);
 
-  // const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    // const fetchUsers = async () => {
-    //   const data = await getDataApi("users", getAccessTokenSilently);
-    //   setUser(data);
-    // };
-    // fetchUsers();
+    const fetchUsers = async () => {
+      const data = await getDataApi("users", getAccessTokenSilently);
+      setUser(data);
+    };
+    fetchUsers();
 
     const fetchMovies = async () => {
-      const data = await getDataApiPublic("publicmovies");
+      const data = await getDataApi("movies", getAccessTokenSilently);
       setMovies(data);
     };
     fetchMovies();
 
-    // const fetchGenres = async () => {
-    //   const data = await getDataApi("genres", getAccessTokenSilently);
-    //   setGenres(data);
-    // };
-    // fetchGenres();
-  }, []);
+    const fetchGenres = async () => {
+      const data = await getDataApi("genres", getAccessTokenSilently);
+      setGenres(data);
+    };
+    fetchGenres();
+  }, [] );
 
   useEffect(() => {
     // console.log(user);
-    console.log(movies);
+    // console.log(movies);
     // console.log(genres);
-  }, [ movies]);
+  }, [user, movies, genres]);
 
   return (
     <>
