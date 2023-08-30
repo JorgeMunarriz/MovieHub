@@ -17,6 +17,7 @@ export interface MoviesType {
   score: number;
   year: number;
   imageId: string;
+  imageUrl: string;
   genres: GenreType[];
   genresArray: string[];
   createdAt: string;
@@ -69,12 +70,12 @@ export const PublicDataApi = () => {
     <>
       {movies.map((movies) => (
         <Cards
-          key={movies.id}
+          key={movies.imageId}
           id={movies.id}
           title={movies.title}
           score={movies.score}
           year={movies.year}
-          imageId={movies.imageId}
+          imageUrl={movies.imageUrl}
           genres={movies.genres}
           genresArray={movies.genresArray}
           createdAt={movies.createdAt}

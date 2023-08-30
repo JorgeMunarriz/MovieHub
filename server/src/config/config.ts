@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { getEnvVar } from '../utils/getEnvVar';
 import { APP_ORIGIN, AUTH0_AUDIENCE, AUTH0_ISSUER } from "./authReferences";
+import { CLOUDINARY_API_KEY, CLOUDINARY_NAME, CLOUDINARY_API_SECRET } from "../utils/cloudinaryReferences";
 
 dotenv.config();
 
@@ -11,7 +12,14 @@ type TConfig = {
 type EnvironmentConfig = {
   app: AppConfig;
   auth0: AuthConfig;
+  cloudinary: CloudinaryConfig;
 };
+type CloudinaryConfig = {
+  cloudinary_name: string | undefined;
+  cloudinary_api_key: string | undefined;
+  cloudinary_api_secret: string | undefined;
+};
+
 type AppConfig = {
   PORT: string | number;
 };
@@ -39,6 +47,12 @@ const CONFIG: TConfig = {
       audience: getEnvVar(AUTH0_AUDIENCE),
       issuer: getEnvVar(AUTH0_ISSUER),
     },
+    cloudinary: {
+      cloudinary_name: process.env.CLOUDINARY_NAME,
+      cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+      cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
+
+    }
   },
   production: {
     app: {
@@ -49,6 +63,12 @@ const CONFIG: TConfig = {
         audience: getEnvVar(AUTH0_AUDIENCE),
         issuer: getEnvVar(AUTH0_ISSUER),
     },
+    cloudinary: {
+      cloudinary_name: process.env.CLOUDINARY_NAME,
+      cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+      cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
+
+    }
   },
 };
 

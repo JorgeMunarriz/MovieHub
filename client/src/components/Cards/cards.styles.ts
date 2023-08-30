@@ -38,7 +38,7 @@ export const CardsStyles = styled.div`
       height: 30px;
       width: 30px;
       border-radius: 50%;
-      z-index: 100;
+      z-index: 10;
       padding: 2px;
       svg {
         width: 80%;
@@ -62,21 +62,41 @@ export const CardsStyles = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     padding: 10px;
+    &-country{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
     &-titleMovie{
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
     }
-    &-yearMovie{
+    &-scoreMovie{
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       font-size: 1.5rem;
       width: 100%;
+      &-imdbLogo{
+        width: 20px;
+        height: 20px;
+      }
     }
-    &-titleMovie{
-      font-size: 2rem;
+    
+    &-div{
+      display: flex;
+      &-genreMovie{
+        color: rgba(0,0,0,0.8);
+      }
+      &-ul{
+        display: flex;
+        &-genresList{
+          padding-left: 5px;
+        }
+      }
     }
   }
 `;

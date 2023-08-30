@@ -4,18 +4,12 @@ import { getDataApi } from "./getDataApi";
 import { Cards } from "../components/Cards/Cards";
 import { useAuth0 } from "@auth0/auth0-react";
 
-interface UserTypes {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  movies: string[];
-}
 interface MoviesType {
   id: string;
   title: string;
   score: number;
   year: number;
+  country: string;
   imageId: string;
   genres: GenreType[];
   genresArray: string[];
@@ -33,54 +27,29 @@ interface GenreType {
 }
 
 export const GetMovies = () => {
-  const [user, setUser] = useState<UserTypes[]>([]);
-  const [movies, setMovies] = useState<MoviesType[]>([]);
-  const [genres, setGenres] = useState<GenreType[]>([]);
+  const [moviesData, setMoviesData] = useState<MoviesType[]>([]);
 
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, user } = useAuth0();
+  const url = `users/${user?.email}`;
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const data = await getDataApi("users", getAccessTokenSilently);
-      setUser(data);
-    };
-    fetchUsers();
-
     const fetchMovies = async () => {
-      const data = await getDataApi("movies", getAccessTokenSilently);
-      setMovies(data);
+      const data = await getDataApi(url, getAccessTokenSilently);
+      setMoviesData(data.movies);
     };
     fetchMovies();
-
-    const fetchGenres = async () => {
-      const data = await getDataApi("genres", getAccessTokenSilently);
-      setGenres(data);
-    };
-    fetchGenres();
-  }, [] );
+  }, []);
 
   useEffect(() => {
     // console.log(user);
-    // console.log(movies);
+    console.log(moviesData);
     // console.log(genres);
-  }, [user, movies, genres]);
+  }, [moviesData]);
 
   return (
     <>
-      {movies.map((movies) => (
-        <Cards
-          key={movies.id}
-          id={movies.id}
-          title={movies.title}
-          score={movies.score}
-          year={movies.year}
-          imageId={movies.imageId}
-          genres={movies.genres}
-          genresArray={movies.genresArray}
-          createdAt={movies.createdAt}
-          updatedAt={movies.updatedAt}
-          usersId={movies.usersId}
-        />
+      {moviesData.map((movies) => (
+        <Cards key={movies.id} {...movies} />
       ))}
     </>
   );

@@ -18,6 +18,8 @@ export const getDataApi = async (endpoint: string, getToken: GetTokenFunction) =
     throw new Error("error fetching data");
   }
 };
+
+
 export const getDataApiPublic = async (endpoint: string) => {  
   try {
     const response = await fetch(`${VITE_URL}${endpoint}`);

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../db/prismaClient";
 import { uploadImage } from "../utils/cloudinary";
+import fs from "fs-extra";
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
   let { title, year, score, country, genres } = req.body;
@@ -22,46 +23,51 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
       if (!genre) {
         genre = await prisma.genres.create({ data: { genre: genreName } });
       }
-
       genreIDs.push(genre.id);
     }
-    const imageVerification = req.files?.image;
-    console.log(imageVerification);
-    if (imageVerification) {
-      //const imageUploaded = await uploadImage(imageVerification.tempFilePath)
+    if (!req.files || !req.files.image) {
+      return res.status(400).json({ error: "Image is missing" });
     }
 
-    const newMovie = await prisma.movies.create({
-      data: {
-        title,
-        year,
-        score,
-        country,
-        // Connect genres using IDs
-        genres: {
-          connect: genreIDs.map((genreID: string) => ({ id: genreID })),
-        },
-        users: {
-          connect: {
-            id: userID,
-          },
-        },
-        // Store genres as an array of names
-        genresArray: genres,
-      },
-      include: {
-        genres: true,
-        users: true,
-      },
-    });
-    await prisma.users.update({
-      where: { id: userID },
-      data: {
-        moviesArray: { push: newMovie.title },
-      },
-    });
+    if ((req.files as any)?.image) {
+      const upload = await uploadImage((req.files as any).image.tempFilePath);
+      await fs.unlink((req.files as any).image.tempFilePath);
 
-    return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
+      const newMovie = await prisma.movies.create({
+        data: {
+          title,
+          year,
+          score,
+          country,
+          // Connect genres using IDs
+          genres: {
+            connect: genreIDs.map((genreID: string) => ({ id: genreID })),
+          },
+          users: {
+            connect: {
+              email: userID,
+            },
+          },
+          imageUrl: upload.secure_url,
+          imageId: upload.public_id,
+          // Store genres as an array of names
+          genresArray: genres,
+        },
+        include: {
+          genres: true,
+          users: true,
+        },
+      });
+      await prisma.users.update({
+        where: { email: userID },
+        data: {
+          moviesArray: { push: newMovie.title },
+        },
+      });
+
+      return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
+    }
+    return res.status(404).send("File not found");
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -168,8 +174,6 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
 //       },
 //     });
 
-    
-
 //     const userID = users.
 
 //     if (userID) {
@@ -184,7 +188,7 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
 
 //     // Delete the movie
 //     await prisma.movies.deleteMany({
-      
+
 //     });
 
 //     return res.status(200).send({ status: "Success", msg: "Deleted movies" });

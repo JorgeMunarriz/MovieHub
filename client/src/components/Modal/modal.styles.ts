@@ -64,11 +64,15 @@ export const ModalContent = styled.div`
       &-label {
         font-size: 1rem;
         color: rgba(50, 50, 50, 0.8);
+        &-uploadFile{
+          padding: 15px;
+        }
       }
       &-input {
         font-size: 1rem;
         color: rgba(50, 50, 50, 0.8);
-        border-radius: 5px;
+        border-radius: 15px;
+        padding: 5px;
       }
     }
     &-btnAddMovie {

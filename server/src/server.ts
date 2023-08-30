@@ -6,6 +6,8 @@ import helmet from "helmet";
 import { checkJwtMiddleware } from "./middleware/checkjwt.middleware";
 import { errorHandler } from "./middleware/error.middleware";
 import fileUpload from 'express-fileupload';
+
+
 const app = express();
 app
   .use(cors())
@@ -20,7 +22,7 @@ app
   )
   .use("/publicmovies", PublicMoviesRouter)
   .use("/users", UserRouter)
-  .use("/movies", MoviesRouter)
+  .use("/movies",checkJwtMiddleware, MoviesRouter)
   .use("/genres", GenresRouter)
   .use(errorHandler);
 export default app;
