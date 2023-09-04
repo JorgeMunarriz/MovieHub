@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import prisma from "../db/prismaClient";
+import {prismaClient} from "../db/prismaClient";
+import { convertToType } from '../utils/convertToType';
 
 export const createGenre = async (req: Request, res: Response): Promise<Response> => {
   const {  genre } = req.body;
   try {
-    const newGenre = await prisma.genres.create({
+    const newGenre = await prismaClient.genres.create({
       data: {genre}
     })
     return res.status(201).send({status:"Success", msg:"Create Succesfully",  newGenre});
@@ -16,8 +17,8 @@ export const createGenre = async (req: Request, res: Response): Promise<Response
 export const getGenreByID = async (req: Request, res: Response): Promise<Response> => {
   const { genreID } = req.params;
   try {
-    const genre = await prisma.genres.findUnique({
-      where: {id: genreID}
+    const genre = await prismaClient.genres.findUnique({
+      where: {id: convertToType(genreID)}
     });
    return res.status(200).send(genre);
   } catch (error) {
@@ -26,7 +27,7 @@ export const getGenreByID = async (req: Request, res: Response): Promise<Respons
 };
 export const getAllGenre = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const genre = await prisma.genres.findMany()
+    const genre = await prismaClient.genres.findMany()
    return res.status(200).send(genre);
   } catch (error) {
    return res.status(500).send(error);
@@ -40,9 +41,9 @@ export const updateGenreByID = async (req: Request, res: Response): Promise<Resp
     if(!genre){
       return res.status(404).send({msg: 'Genres not found'});
     }
-    const genreFound = await prisma.genres.update({
+    const genreFound = await prismaClient.genres.update({
       where:{
-        id: genreID},
+        id: convertToType(genreID)},
         data:{ genre }      
     })
     
@@ -56,8 +57,8 @@ export const updateGenreByID = async (req: Request, res: Response): Promise<Resp
 export const deleteGenreByID = async (req: Request, res: Response): Promise<Response> => {
   const { genreID } = req.params;
   try {
-    const deleteGenre = await prisma.genres.delete({
-      where: {id: genreID}
+    const deleteGenre = await prismaClient.genres.delete({
+      where: {id: convertToType(genreID)}
     })
     
     // GenresModel.findByIdAndDelete(genreID);

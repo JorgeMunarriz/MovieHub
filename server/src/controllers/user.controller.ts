@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import prisma from "../db/prismaClient";
+import  { prismaClient } from "../db/prismaClient";
+import { convertToType } from '../utils/convertToType';
+ "../db/prismaClient";
 
 export const createUser = async (req: Request, res: Response): Promise<Response> => {
   const { name, email, moviesArray } = req.body;
@@ -9,14 +11,14 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
       return res.status(400).json({ error: "Missing required fields" });
     }    
     // Check if a user with the given email already exists
-    const existingUser = await prisma.users.findUnique({
+    const existingUser = await prismaClient.users.findUnique({
       where: { email },
     });
 
     if (existingUser) {
-      return res.status(409).json({ error: "User with this email already exists" });
+      return res.status(409).json("User with this email already exists" );
     }
-    const newUser = await prisma.users.create({
+    const newUser = await prismaClient.users.create({
       data: { name, email, moviesArray },
     });
 
@@ -28,7 +30,7 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
 
 export const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const allUsers = await prisma.users.findMany({
+    const allUsers = await prismaClient.users.findMany({
       include: {
         movies: {
           include: {
@@ -47,7 +49,7 @@ export const getAllUsers = async (req: Request, res: Response): Promise<Response
 export const getUserByID = async (req: Request, res: Response): Promise<Response> => {
   const { userID } = req.params;
   try {
-    const userById = await prisma.users.findUnique({
+    const userById = await prismaClient.users.findUnique({
       where: { email: userID },
       include: {
         movies: {
@@ -66,10 +68,10 @@ export const getUserByID = async (req: Request, res: Response): Promise<Response
 
 export const updateUserByID = async (req: Request, res: Response): Promise<Response> => {
   const { userID } = req.params;
-  const { name, email, password } = req.body;
+  const { name, email } = req.body;
   try {
-    const userById = await prisma.users.update({
-      where: { id: userID },
+    const userById = await prismaClient.users.update({
+      where: { id: convertToType(userID) },
       data: { name, email },
     });
 
@@ -82,7 +84,7 @@ export const updateUserByID = async (req: Request, res: Response): Promise<Respo
 export const deleteUserByID = async (req: Request, res: Response): Promise<Response> => {
   const { userID } = req.params;
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prismaClient.users.findUnique({
       where: { id: userID },
       include: {
         movies: {
@@ -100,7 +102,7 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
     // Delete each movie and update associated genres
     for (const movie of user.movies) {
       // Update genres by removing the movie's reference
-      await prisma.genres.updateMany({
+      await prismaClient.genres.updateMany({
         where: {
           moviesId: movie.id,
         },
@@ -110,13 +112,13 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
       });
 
       // Delete the movie
-      await prisma.movies.delete({
+      await prismaClient.movies.delete({
         where: { id: movie.id },
       });
     }
 
     // Delete the user
-    await prisma.users.delete({
+    await prismaClient.users.delete({
       where: { id: userID },
     });
 
@@ -131,7 +133,7 @@ export const deleteUsers = async (req: Request, res: Response): Promise<Response
   
   try {
     // Find the user by their email
-    const user = await prisma.users.findUnique({
+    const user = await prismaClient.users.findUnique({
       where: { email: email },
     });
 
@@ -140,7 +142,7 @@ export const deleteUsers = async (req: Request, res: Response): Promise<Response
     }
 
     // Delete the user using their MongoDB ObjectId
-    await prisma.users.delete({
+    await prismaClient.users.delete({
       where: { id: email }, // Convert the id to an ObjectID
     });
   

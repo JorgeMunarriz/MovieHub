@@ -22,7 +22,7 @@ app
   )
   .use("/publicmovies", PublicMoviesRouter)
   .use("/users", UserRouter)
-  .use("/movies",checkJwtMiddleware, MoviesRouter)
+  .use("/movies", MoviesRouter)
   .use("/genres", GenresRouter)
   .use(errorHandler);
 export default app;

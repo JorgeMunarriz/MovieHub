@@ -1,10 +1,5 @@
 import { VITE_URL } from '../global/serverUrl';
-
-
-// const VITE_URL_USERS = `${VITE_URL}users`;
-
-
-export type GetTokenFunction = () => Promise<string>;
+import { GetTokenFunction } from '../types/moviehub.types';
 
 export const getDataApi = async (endpoint: string, getToken: GetTokenFunction) => {
   const token = await getToken();

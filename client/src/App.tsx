@@ -1,3 +1,4 @@
+import { MovieProvider } from "./context/MovieContext";
 import RouterPaths from "./routes/RouterPaths.routes";
 
 
@@ -5,7 +6,9 @@ function App() {
   
 
   return (
-    <RouterPaths/>
+    <MovieProvider>
+      <RouterPaths/>
+    </MovieProvider>
   )
 }
 

@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import prisma from "../db/prismaClient";
 import { uploadImage } from "../utils/cloudinary";
 import fs from "fs-extra";
+import { prismaClient } from "../db/prismaClient";
 
 
 export const createPublicMovie = async (req: Request, res: Response): Promise<Response> => {
   let { title, year, score, country, genres } = req.body;
 
-  const { userID } = req.params;
 
   if (typeof title !== "string") title = title.toString();
   if (typeof year !== "number") year = Number(year);
@@ -19,10 +18,10 @@ export const createPublicMovie = async (req: Request, res: Response): Promise<Re
     const genreIDs: string[] = [];
 
     for (const genreName of genres) {
-      let genre = await prisma.genres.findUnique({ where: { genre: genreName } });
+      let genre = await prismaClient.genres.findUnique({ where: { genre: genreName } });
 
       if (!genre) {
-        genre = await prisma.genres.create({ data: { genre: genreName } });
+        genre = await prismaClient.genres.create({ data: { genre: genreName } });
       }
       genreIDs.push(genre.id);
     }
@@ -34,7 +33,7 @@ export const createPublicMovie = async (req: Request, res: Response): Promise<Re
       const upload = await uploadImage((req.files as any).image.tempFilePath);
       await fs.unlink((req.files as any).image.tempFilePath);
 
-      const newMovie = await prisma.publicmovies.create({
+      const newMovie = await prismaClient.publicmovies.create({
         data: {
           title,
           year,
@@ -65,7 +64,7 @@ export const createPublicMovie = async (req: Request, res: Response): Promise<Re
 export const getPublicMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
   try {
-    const movie = await prisma.publicmovies.findUnique({
+    const movie = await prismaClient.publicmovies.findUnique({
       where: { id: movieID },
       include: { genres: true },
     });
@@ -73,10 +72,7 @@ export const getPublicMovieByID = async (req: Request, res: Response): Promise<R
     if (!movie) {
       return res.status(404).send({ msg: "Movie not found" });
     }
-    //Fetch the genres using genreIds
-    // const genreIds = movie.genres
-    // const genres = await GenresModel.find({_id: { $in: genreIds }}, {_id: 1, genre: 1  })
-    // movie.genres = genres
+    
 
     return res.status(200).send(movie);
   } catch (error) {
@@ -87,20 +83,11 @@ export const getPublicMovieByID = async (req: Request, res: Response): Promise<R
 
 export const getPublicAllMovies = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const movies = await prisma.publicmovies.findMany({
+    const movies = await prismaClient.publicmovies.findMany({
       include: {
         genres: true,
       },
     });
-
-    // const moviesWithGenres = await Promise.all(
-    //   movies.map(async (movie) => {
-    //     const genreIds = movie.genres;
-    //     const genres = await GenresModel.find({ _id: { $in: genreIds } }, { _id: 1, genre: 1 });
-    //     movie.genres = genres;
-    //     return movie.toObject();
-    //   })
-    // );
 
     return res.status(200).send(movies);
   } catch (error) {
@@ -112,7 +99,7 @@ export const updatePublicMovieByID = async (req: Request, res: Response): Promis
   const { movieID } = req.params;
   const { title, score, year, genres } = req.body;
   try {
-    const movie = await prisma.publicmovies.update({
+    const movie = await prismaClient.publicmovies.update({
       where: { id: movieID },
       data: { title, score, year, genres },
     });
@@ -128,7 +115,7 @@ export const deletePublicMovieByID = async (req: Request, res: Response): Promis
   const { movieID } = req.params;
 
   try {
-    const movie = await prisma.publicmovies.findUnique({
+    const movie = await prismaClient.publicmovies.findUnique({
       where: { id: movieID }
     });
 
@@ -137,7 +124,7 @@ export const deletePublicMovieByID = async (req: Request, res: Response): Promis
     }
 
     // Delete the movie
-    await prisma.publicmovies.delete({
+    await prismaClient.publicmovies.delete({
       where: { id: movieID },
     });
 

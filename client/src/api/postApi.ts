@@ -1,7 +1,8 @@
+import { GetTokenFunction  } from "../types/moviehub.types";
 
 
 
- export const postApi = async (url: string, data: any, getToken: any ) => {
+ export const postApi = async (url: string, data: any, getToken: GetTokenFunction ) => {
   const token = await getToken();
 
   try {
@@ -17,7 +18,7 @@
     if (response.ok) {
       console.log(response);
     } else {
-      throw new Error("No response");
+      throw new Error("No response at server");
     }
   } catch (error) {
     console.log(error);

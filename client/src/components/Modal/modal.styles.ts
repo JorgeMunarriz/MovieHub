@@ -64,7 +64,7 @@ export const ModalContent = styled.div`
       &-label {
         font-size: 1rem;
         color: rgba(50, 50, 50, 0.8);
-        &-uploadFile{
+        &-uploadFile {
           padding: 15px;
         }
       }
@@ -73,6 +73,13 @@ export const ModalContent = styled.div`
         color: rgba(50, 50, 50, 0.8);
         border-radius: 15px;
         padding: 5px;
+      }
+      &-img {
+        display: flex;
+        flex-direction: row-reverse;
+        &-imgPreview {
+          width: 100px;
+        }
       }
     }
     &-btnAddMovie {
@@ -84,9 +91,8 @@ export const ModalContent = styled.div`
       border: none;
       border-radius: 20px;
       cursor: pointer;
-      &:hover{
-        
-      background-color: rgba(0, 123, 250, 0.6);
+      &:hover {
+        background-color: rgba(0, 123, 250, 0.6);
       }
     }
   }
@@ -101,8 +107,7 @@ export const ModalButton = styled.button`
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  &:hover{
-        
-        background-color: rgba(50, 50, 50, 0.6);
-        }
+  &:hover {
+    background-color: rgba(50, 50, 50, 0.6);
+  }
 `;
