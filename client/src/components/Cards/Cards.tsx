@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const Cards = ({ ...props }: MoviesType) => {
   const {  isAuthenticated } = useAuth0();
-  const { moviesData, likedMovies, toggleLikedStatus } = useMovieContext();
+  const {  toggleLikedStatus } = useMovieContext();
   const [ isLikedButton, setIsLikedButton ] = useState(false);
 
   const handleLiked = async () => {
