@@ -1,21 +1,27 @@
-# MovieHub_Back-end 🎬 + MovieHub_Front-end
+# MovieHub 🎬
 
 
 Welcome to the MovieHub project, an application to keep track of the movies you are watching. This project is designed to help you learn and practice your backend development skills. Throughout the project, you will be adding functionalities and refactoring your code as you learn new concepts.
 
 
-![homepage_desktop.png](/server/src/assets/img/desktop_image.png)
+![homepage_desktop.png](client/src/assets/img/desktop_image.png)
+
+
+## Responsive design
+![Responsive_design.png](client/src/assets/img/Responsive_design.png)
+
+![desktop_mac_image.png](client/src/assets/img/desktop_mac_image.png)
 
 ## Project Description
 
-MovieHub is an application that allows you to manage a list of movies. Each movie in the application has a name, a poster, a score, and a genre. You will be able to perform CRUD (Create, Read, Update, Delete) operations on these movies.
+MovieHub is an application that allows you to manage a list of movies. Each movie in the application has a name, a image, a score, and a genre. You will be able to perform CRUD (Create, Read, Update, Delete) operations on these movies.
 
 The frontend of the application is built with React + Vite + Typescript. 
-You can show it at server folder.
+You can show it at https://github.com/JorgeMunarriz/MovieHub
 
 In the user interface, you will be able to view all added movies in a list. Each movie will be displayed with its name, poster, score, and genre. There will be an option to add new movies through a modal or a new page, where you can enter the movie's name, upload a poster image, assign a score, and select a genre. You will also have the option to update the data of existing movies or remove them from the list.
 
-- The Backend of the application is built with Node + typescript + MongoDB + Prisma + PostgreSQL + Cloudinary. 
+- The Backend of the application is built with Node + Mongoose + typescript + MongoDB + Prisma + PostgreSQL + Cloudinary. 
 
 Although the frontend of the application is important for user interaction, the main focus of this project is the backend. As you progress through the project, you will learn and apply different backend technologies and concepts, including Node.js, Express, MongoDB, Prisma, PostgreSQL, Auth0, and Cloudinary. You will learn how these technologies work together to support the functionalities of the application and provide a smooth user experience.
 
@@ -50,13 +56,15 @@ Clone the repository from GitHub:
 
 
 ```bash
-git clone https://github.com/JorgeMunarriz/MovieHub_Back-end.git
+git clone https://github.com/JorgeMunarriz/MovieHub.git
 ```
 
 ```bash
-cd MovieHub_Back-End
+cd MovieHub
 ```
-
+```bash
+cd client 
+```
 Install the project dependencies:
 
 ```bash
@@ -74,7 +82,64 @@ or
 ```bash
 yarn install
 ```
+
+and you must be install the backend dependencies: 
+
+```bash
+cd server
+```
+```bash
+npm install
+```
+or 
+```bash
+npm i
+```
+
+## Setting up Environment Variables
+
+Both the client and server applications of Moviehub rely on environment variables stored in .env files for configuration. Before you start using the app, make sure to create a .env file in the root directory of each component (client and server) and provide the necessary values.
+
+### Client Environment Variables
+
+In the client directory, create a .env file with the following variables:
+
+```bash
+VITE_API=YourLocalHostPort
+VITE_AUTH0_DOMAIN=yourDomainAuth0.com
+VITE_AUTH_CLIENT_ID=YourClientID
+VITE_AUTH0_CLIENT_SECRET=YourClientSecretAuth0
+VITE_AUTH_AUDIENCE=YourAudienceAuth0
+```
+
+Replace the placeholder values with your specific configuration details.
+
+### Server Environment Variables
+
+In the server directory, create a .env file with the following variables:
+
+```bash
+PORT=YourPORT
+MONGO_DB_URI=mongodb+srv://yourcluster@dbcluster.yourIdCluster.mongodb.net/yourDatabase
+MONGO_CLUSTER_URI=mongodb+srv://yourcluster@dbcluster.yourIdCluster.mongodb.net/yourDatabase
+DATABASE_URI=postgresql://postgres:yourPasswordPGAdmin@localhost:5432/yourDatabase?schema=public
+DATA_SOURCE=mongodb??or/postgresql
+APP_ORIGIN=http://yourLocalHost
+AUTH0_AUDIENCE=http://yourLocalHost
+AUTH0_ISSUER=https://yourAuth0Issuer.us.auth0.com/
+CLOUDINARY_NAME=yourCloudinaryName
+CLOUDINARY_API_KEY=yourCloudinaryApiKey
+CLOUDINARY_API_SECRET=yourCloudinaryApiSecret
+```
+
+Again, ensure that you replace the placeholder values with your specific configuration details.
+
+These environment variables are crucial for the proper functioning of the Moviehub app. Make sure to keep your actual sensitive information secure and never share it in your code repository. Users who clone your repository will need to create their own .env files with their unique values for the app to work correctly.
+
 ## How to use
+
+
+
 
 ```bash
 npm run test
@@ -130,6 +195,7 @@ Cloudinary: A cloud-based service for storing and transforming media content.
 #### Database:
 
 MongoDB: A NoSQL database used to store movie data (prior to PostgreSQL migration).
+PostgreSql: a 
 #### Dev Dependencies:
 
 TypeScript: A typed superset of JavaScript used to add type safety.
@@ -162,6 +228,12 @@ You can find me on LinkedIn, Facebook, and view my other projects on GitHub usin
 - [Auth0](https://auth0.com/)
 - [express-oauth2-jwt-bearer](https://www.npmjs.com/package/express-oauth2-jwt-bearer)
 - [Auth0 React SDK](https://auth0.com/docs/quickstart/spa/react)
+
+
+
+### LightHouse test
+
+![Test_Lighthouse.png](client/src/assets/img/Test_Lighthouse.png)
 
 
 Remember, the goal of this project is to learn and practice. Don't hesitate to ask for help if you get stuck.

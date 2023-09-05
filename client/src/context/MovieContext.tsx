@@ -36,9 +36,6 @@ export const MovieProvider = (props: TypeProps) => {
     if(!isAuthenticated){
       return
     } else {
-      setTimeout(() => {
-        fetchMovies()
-      }, 1000);
       const fetchInterval = setInterval(() => fetchMovies(), 1000);
       return () => clearInterval(fetchInterval);
     }
