@@ -1,41 +1,95 @@
 import { Request, Response } from "express";
-import { GenresModel, MoviesModel, UserModel } from "../model";
+import { prismaClient } from "../db/prismaClient";
+import { uploadImage, deleteImage } from "../utils/cloudinary";
+import fs from "fs-extra";
+import { convertToType } from "../utils/convertToType";
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
-  const { name, year, score, genres } = req.body;
+  let { title, year, score, country, genres } = req.body;
+
   const { userID } = req.params;
+
+  if (typeof title !== "string") title = title.toString();
+  if (typeof year !== "number") year = Number(year);
+  if (typeof score !== "number") score = Number(score);
+  if (typeof country !== "string") country = country.toString();
+  if (typeof genres === "string") {
+    genres = genres.split(',').map((genre: string) => genre.trim());
+  }
+
   try {
-    const foundGenres = await GenresModel.find({ genre: { $in: genres.map((genres: { genre: any; }) => genres.genre)}})
-    // Extract the genre ids from the found genres
-    const genreNames = foundGenres.map((genre) => genre);
-    
-    const newMovie = await MoviesModel.create({ name, year, score, genres: genreNames });
+    const genreIDs: string[] = [];
 
-    await UserModel.findByIdAndUpdate(
-       userID,
-      {
-        $push: { movies:{_id: newMovie._id, name: newMovie.name, genres: newMovie.genres}}
+    for (const genreName of genres) {
+      let genre = await prismaClient.genres.findUnique({ where: { genre: genreName } });
+
+      if (!genre) {
+        genre = await prismaClient.genres.create({ data: { genre: genreName } });
       }
-    );
+      genreIDs.push(genre.id);
+    }
+    if (!req.files || !req.files.image) {
+      return res.status(400).json({ error: "Image is missing" });
+    }
 
-   return res.status(201).send(newMovie);
+    if ((req.files as any)?.image) {
+      const upload = await uploadImage((req.files as any).image.tempFilePath);
+      await fs.unlink((req.files as any).image.tempFilePath);
+
+      const newMovie = await prismaClient.movies.create({
+        data: {
+          title,
+          year,
+          score,
+          country,
+          // Connect genres using IDs
+          genres: {
+            connect: genreIDs.map((genreID: string) => ({ id: genreID })),
+          },
+          users: {
+            connect: {
+              email: userID,
+            },
+          },
+          imageUrl: upload.secure_url,
+          imageId: upload.public_id,
+          // Store genres as an array of names
+          genresArray: genres,
+        },
+        include: {
+          genres: true,
+          users: true,
+        },
+      });
+      await prismaClient.users.update({
+        where: { email: userID },
+        data: {
+          moviesArray: { push: newMovie.title },
+        },
+      });
+      
+
+      return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
+    }
+    return res.status(404).send("File not found");
   } catch (error) {
+    console.log(error);
     return res.status(500).send(error);
   }
 };
 
 export const getMovieByID = async (req: Request, res: Response): Promise<Response> => {
-  const { movieID } = req.params;  
+  const { movieID } = req.params;
   try {
-    const movie = await MoviesModel.findById(movieID)
-    if (!movie){
-      return res.status(404).send({msg: "Movie not found"});
+    const movie = await prismaClient.movies.findUnique({
+      where: { id:convertToType(movieID)  },
+      include: { genres: true },
+    })
+
+    if (!movie) {
+      return res.status(404).send({ msg: "Movie not found" });
     }
-    //Fetch the genres using genreIds
-    const genreIds = movie.genres
-    const genres = await GenresModel.find({_id: { $in: genreIds }}, {_id: 1, genre: 1  })
-    movie.genres = genres
-    
+
     return res.status(200).send(movie);
   } catch (error) {
     console.log(error);
@@ -45,52 +99,192 @@ export const getMovieByID = async (req: Request, res: Response): Promise<Respons
 
 export const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const movies = await MoviesModel.find();
+    const movies = await prismaClient.movies.findMany({
+      include: {
+        genres: true,
+      },
+    });
 
-    const moviesWithGenres = await Promise.all(
-      movies.map(async (movie) => {
-        const genreIds = movie.genres;
-        const genres = await GenresModel.find({ _id: { $in: genreIds } }, { _id: 1, genre: 1 });
-        movie.genres = genres;
-        return movie.toObject();
-      })
-    );
-
-    return res.status(200).send(moviesWithGenres);
+    return res.status(200).send(movies);
   } catch (error) {
     return res.status(500).send(error);
   }
 };
-
+interface Genre {
+  genre: string
+}
 
 export const updateMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  const { name, score, year, genres } = req.body;
-  try {
+  let { title, score, year, country, genres } = req.body;
 
-    const movie = await MoviesModel.findByIdAndUpdate(movieID,{ $set: { name, score, year, genres }, }, { new: true })
-    await UserModel.findByIdAndUpdate(
-      movieID,
-      {
-        $set: { name, score, year, genres },
+  if (typeof title !== "string") title = title.toString();
+  if (typeof year !== "number") year = Number(year);
+  if (typeof score !== "number") score = Number(score);
+  if (typeof country !== "string") country = country.toString();
+  if (typeof genres === "string") {
+    genres = genres.split(',').map((genre: string) => genre.trim());
+  }
+
+  try {
+    const genreIDs: string[] = [];
+
+    for (const genreName of genres) {
+      let genre = await prismaClient.genres.findUnique({ where: { genre: genreName } });
+
+      if (!genre) {
+        genre = await prismaClient.genres.create({ data: { genre: genreName } });
+      }
+      genreIDs.push(genre.id);
+    }
+
+    let imageUrl = "";
+    if (req.files && req.files.image) {
+      // Upload the new image
+      const upload = await uploadImage((req.files as any).image.tempFilePath);
+      await fs.unlink((req.files as any).image.tempFilePath);
+
+      imageUrl = upload.secure_url;
+    }
+
+    const movie = await prismaClient.movies.findUnique({ where: { id: convertToType(movieID) }, include: { genres: true } });
+
+    if (!movie) {
+      return res.status(404).json({ error: "Movie not found" });
+    }
+
+ 
+// Find the names of the current genres
+    const currentGenres = movie.genres || [];
+
+    // Encuentra los nombres de los géneros actuales
+    const currentGenresArray: string[] = currentGenres.map((genre: { genre: string }) => genre.genre);
+    const genresToRemove: string[] = currentGenresArray.filter((genre: string) => !genres.includes(genre));
+    
+
+   // Remove genres that are no longer in the movie
+
+    for (const genreNameToRemove of genresToRemove) {
+      await prismaClient.genres.deleteMany({
+        where: {
+          genre: genreNameToRemove,
+        },
+      });
+    }
+
+    const movieUpdateData: Record<string, any> = {
+      title,
+      score,
+      year,
+      country,
+      genres: { connect: genreIDs.map((genreID: string) => ({ id: convertToType(genreID) })) },
+    };
+
+    if (imageUrl) {
+      movieUpdateData.imageUrl = imageUrl;
+    }
+
+    const movieUpdate = await prismaClient.movies.update({
+      where: { id: convertToType(movieID) },
+      data: movieUpdateData,
+      include: {
+        genres: true,
       },
-      { new: true }
-    );
-    return res.status(200).send(movie);
+    });
+
+    //Find all genresArray
+    const updatedGenresArray = (movieUpdate.genres as Genre[]).map((genre) => genre.genre);
+
+    // Apdate genresArray
+    await prismaClient.movies.update({
+      where: { id:  convertToType(movieID)  },
+      data: {
+        genresArray: updatedGenresArray,
+      },
+    });
+
+    return res.status(200).send(movieUpdate);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
   }
 };
+
+
+
 export const deleteMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  
+
   try {
-    await UserModel.findByIdAndDelete(movieID);
-    await MoviesModel.findByIdAndDelete(movieID);
-    return res.status(200).send({msg: "Deleted movie by ID"});
+    //Find Movie by id
+    const movie = await prismaClient.movies.findUnique({
+      where: { id:  convertToType(movieID)  },
+      include: {
+        users: true,
+      },
+    });
+
+    if (!movie) {
+      return res.status(404).send({ status: "Error", msg: "Movie not found" });
+    }else {      
+        await deleteImage(movie.imageId)
+      
+    }
+
+    const userID = movie.users?.id;
+
+    if (userID) {
+      // Remove the movie's title from the user's moviesArray
+      await prismaClient.users.update({
+        where: { id: convertToType(userID) },
+        data: {
+          moviesArray: { set: movie.users?.moviesArray.filter((title: string) => title !== movie.title) },
+        },
+      });
+    }
+
+    // Delete the movie
+    await prismaClient.movies.delete({
+      where: { id: convertToType(movieID) },
+    });
+
+    return res.status(200).send({ status: "Success", msg: "Deleted movie by ID" });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
   }
 };
+
+//   const { movieID } = req.params;
+
+//   try {
+//     const movie = await prisma.movies.findMany({
+//       include: {
+//         users: true,
+//       },
+//     });
+
+//     const userID = users.
+
+//     if (userID) {
+//       // Remove the movie's title from the user's moviesArray
+//       await prisma.users.update({
+//         where: { id: userID },
+//         data: {
+//           moviesArray: { set: movie.users?.moviesArray.filter((title: string) => title !== movie.title) },
+//         },
+//       });
+//     }
+
+//     // Delete the movie
+//     await prisma.movies.deleteMany({
+
+//     });
+
+//     return res.status(200).send({ status: "Success", msg: "Deleted movies" });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).send(error);
+//   }
+// };
