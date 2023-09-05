@@ -3,12 +3,9 @@ import { ButtonStyles, LogOutButton, Modal } from "..";
 import { HeaderStyles } from "./header.styles";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BsFilm } from "react-icons/bs";
-import { useMovieContext } from "../../hooks/useContextHook";
-import { useEffect } from "react";
 
 export const Header = () => {
   const { isAuthenticated, loginWithPopup } = useAuth0();
-  const { fetchMovies } = useMovieContext();
 
   const navigate = useNavigate()
 
@@ -16,15 +13,7 @@ export const Header = () => {
     await loginWithPopup();
     navigate('/profile')
   }
-  // useEffect(() => {
-  //   if (isAuthenticated){
-  //    fetchMovies()
-  //   } 
-    
-  // }, [])
   
-
-
   return (
     <HeaderStyles>
       <div className="header__left">
