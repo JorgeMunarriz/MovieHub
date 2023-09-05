@@ -19,7 +19,7 @@ export interface UserTypes {
     createdAt: string;
     updatedAt: string;
     users?: UserTypes; // Opcionalmente, puedes incluir la relación inversa si la necesitas
-    fetchMovies: () => void;
+    
   }
   
   export interface GenreType {

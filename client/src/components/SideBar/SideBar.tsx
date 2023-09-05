@@ -16,7 +16,7 @@ export const SideBar = () => {
       {isOpen && (
         <div className="sidebar">
           <div className="sidebar__header">
-            <h4 className="sidebar__header-title">Filters</h4>
+            <h4 className="sidebar__header-title">Filters:</h4>
           </div>
           <div className="sidebar__main">
             <ul className="sidebar__main-filters">

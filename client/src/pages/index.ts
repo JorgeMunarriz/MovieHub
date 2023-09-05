@@ -1,5 +1,3 @@
-export * from './private/MoviesPageDetail';
-export * from './private/ProfilePage';
-export * from './public/home/HomePage';
-export * from './public/home/homepage.styles';
+export * from './private';
+export * from './public/home';
 export * from './public';

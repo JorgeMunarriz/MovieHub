@@ -6,22 +6,19 @@ import { deleteMovie } from "../../api";
 import { useAuth0 } from "@auth0/auth0-react";
 import { VITE_URL_MOVIES } from "../../global/serverUrl";
 import { ModalUpdateMovie } from "..";
-import { useEffect } from "react";
 import { MoviesType } from "../../types/moviehub.types";
-// import { useMovieContext } from "../../hooks/useContextHook";
+import { useMovieContext } from "../../hooks/useContextHook";
 
-export const Cards = ({ ...props }:MoviesType) => {
+const Cards = ({ ...props }: MoviesType) => {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
-  // const { fetchMovies } = useMovieContext();
+   const { fetchMovies } = useMovieContext();
 
   const url = `${VITE_URL_MOVIES}/${props.id}`;
-  console.log(props.id)
 
   const handleDelete = async () => {
     await deleteMovie(url, getAccessTokenSilently);
-    props.fetchMovies();
+    fetchMovies();
   };
-  
 
   return (
     <CardsStyles>
@@ -65,7 +62,7 @@ export const Cards = ({ ...props }:MoviesType) => {
                 year={props.year}
                 country={props.country}
                 image={props.image}
-                genres={props.genres.genre}
+                genres={props.genres}
                 genresArray={props.genresArray}
                 createdAt={props.createdAt}
                 updatedAt={props.updatedAt}
@@ -80,3 +77,4 @@ export const Cards = ({ ...props }:MoviesType) => {
     </CardsStyles>
   );
 };
+export default Cards;

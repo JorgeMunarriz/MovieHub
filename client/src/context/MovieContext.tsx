@@ -1,62 +1,56 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react'; 
-import { MoviesType } from '../types/moviehub.types';
-import { getDataApi } from '../api';
+import { createContext, useState, ReactNode, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { MoviesType } from "../types/moviehub.types";
+import { getDataApi } from "../api";
 
-// Define una interfaz para el estado del contexto
+// Interface's context
 export interface MovieContextState {
-  moviesData: MoviesType[]; // Ajusta esto a tu tipo de datos real
+  moviesData: MoviesType[];
   fetchMovies: () => void;
-  deleteMovie: (movieId: string) => void; 
 }
 
-// Crea el contexto y proporciona un valor inicial (vacío)
+// CreateContext
 export const MovieContext = createContext<MovieContextState | undefined>(undefined);
 
 type TypeProps = {
-    children: ReactNode;
-  }
+  children: ReactNode;
+};
 
-// Crea un componente que actúe como proveedor del contexto
-export const MovieProvider = ( props : TypeProps) => {
+export const MovieProvider = (props: TypeProps) => {
   const [moviesData, setMoviesData] = useState<MoviesType[]>([]);
-  const { getAccessTokenSilently, user } = useAuth0()
-  
+  const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
+
   const url = `users/${user?.email}`;
 
-  // Define la función fetchMovies
   const fetchMovies = async () => {
     const data = await getDataApi(url, getAccessTokenSilently);
-      setMoviesData(data.movies);      
-  };
-  const deleteMovie = async (movieId: string) => {
-    // Realiza la eliminación en el servidor
-    // ...
-  
-    // Actualiza el estado excluyendo la película eliminada
-    setMoviesData((prevMovies) => prevMovies.filter((movie) => movie.id !== movieId));
-  };
- 
+    setMoviesData(data.movies);
+  }; 
 
-  // useEffect(() => {
-    
-  //     fetchMovies();
-    
-  // }, [url]);
-  // useEffect(() => {
-    
-  
-  // }, [moviesData]);
+  // const deleteMovie = async (movieId: string) => {
 
-  // Pasa el estado y las funciones a través del contexto
+  //   setMoviesData((prevMovies) => prevMovies.filter((movie) => movie.id !== movieId));
+  // };
+
+  useEffect(() => {
+    if(!isAuthenticated){
+      return
+    } else {
+      setTimeout(() => {
+        fetchMovies()
+      }, 1000);
+      const fetchInterval = setInterval(() => fetchMovies(), 1000);
+      return () => clearInterval(fetchInterval);
+    }
+      // fetchMovies()
+    
+  }, [url]);
+  useEffect(() => {}, [moviesData]);
+
   const contextValue: MovieContextState = {
     moviesData,
     fetchMovies,
-    deleteMovie
   };
 
   return <MovieContext.Provider value={contextValue}>{props.children}</MovieContext.Provider>;
 };
-
-
-

@@ -4,15 +4,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useForm } from "react-hook-form";
 import { getMovieById, updateMovie } from "../../api";
 import { VITE_URL_MOVIES } from "../../global/serverUrl";
-import {  MovieFormData, MoviesType } from "../../types/moviehub.types";
+import {  MoviesType } from "../../types/moviehub.types";
+import { useMovieContext } from "../../hooks/useContextHook";
 
-export const ModalUpdateMovie = ({id, title, score, year, country, genresArray, image, genres }: MovieFormData) => {
+export const ModalUpdateMovie = ({id, title, score, year, country, genresArray, image, genres }:MoviesType) => {
+  const { fetchMovies } = useMovieContext();
   const [modalIsOpen, setIsOpen] = useState(false);
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [movieData, setMovieData] = useState({ title, year, score, country, genresArray, image, genres });
+  
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>();
+  const [imagePreview, setImagePreview] = useState<string>();  
   
   const { register, handleSubmit } = useForm<MoviesType>();
   
@@ -21,8 +24,8 @@ export const ModalUpdateMovie = ({id, title, score, year, country, genresArray, 
     if (modalIsOpen) {
       const url = `${VITE_URL_MOVIES}/${id}`;      
       getMovieById(url, getAccessTokenSilently).then((movie) => {
-        console.log(movie)
         if (movie) {
+          console.log(movie)
           setMovieData({
             title: movie.title,
             year: movie.year,
@@ -59,7 +62,8 @@ export const ModalUpdateMovie = ({id, title, score, year, country, genresArray, 
       ...data, genres: data.genres.split(",").map((genre:string) => genre.trim()),
     }
     updateMovie(url, updatedData, getAccessTokenSilently);
-    setIsOpen(!modalIsOpen);
+    setIsOpen(!modalIsOpen);  
+    fetchMovies()  
   });
 
 

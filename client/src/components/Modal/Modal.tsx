@@ -5,20 +5,22 @@ import { useForm } from "react-hook-form";
 
 import { VITE_URL_MOVIES } from "../../global/serverUrl";
 import { createMovie } from "../../api";
-// import { useMovieContext } from "../../hooks/useContextHook";
-// import { MovieFormData} from "../../types/moviehub.types";
-// import { image } from "../../assets/img";
+import { useMovieContext } from "../../hooks/useContextHook";
+
 
 export const Modal = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const { fetchMovies } = useMovieContext();
+  
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
   const { register, handleSubmit } = useForm();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  // const { fetchMovies } = useMovieContext();
+
 
   const toggleModal = () => {
     setIsOpen(!modalIsOpen);
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onsubmit = handleSubmit((data: any) => {
     if (data.title && data.score && data.year && data.country && data.genres) {
       const movieData = {
@@ -28,10 +30,10 @@ export const Modal = () => {
       const url = `${VITE_URL_MOVIES}/${user?.email}`;
       createMovie(url, movieData, getAccessTokenSilently);
       setIsOpen(!modalIsOpen);
-      
     } else {
       console.error("The data does not have the correct structure.");
     }
+    fetchMovies()
   });
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -40,9 +42,7 @@ export const Modal = () => {
       setSelectedFile(file);
     }
   };
-  // useEffect(() => {
-  //   fetchMovies();
-  // }, []);
+  
 
   return (
     <ModalStyles>

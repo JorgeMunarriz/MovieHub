@@ -2,6 +2,7 @@ import { GetTokenFunction  } from "../types/moviehub.types";
 
 
 
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  export const postApi = async (url: string, data: any, getToken: GetTokenFunction ) => {
   const token = await getToken();
 

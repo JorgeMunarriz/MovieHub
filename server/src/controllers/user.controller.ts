@@ -85,7 +85,7 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
   const { userID } = req.params;
   try {
     const user = await prismaClient.users.findUnique({
-      where: { id: userID },
+      where: { id: convertToType(userID) },
       include: {
         movies: {
           include: {
@@ -113,13 +113,13 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
 
       // Delete the movie
       await prismaClient.movies.delete({
-        where: { id: movie.id },
+        where: { id: convertToType(movie.id) },
       });
     }
 
     // Delete the user
     await prismaClient.users.delete({
-      where: { id: userID },
+      where: { id:convertToType(userID) },
     });
 
     return res.status(200).json({ status: "Success", msg: "Delete User" });
