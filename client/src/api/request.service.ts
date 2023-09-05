@@ -111,3 +111,29 @@ export const getMovieById = async (url: string, getToken: GetTokenFunction) => {
     console.log(error);
   }
 };
+
+
+export const updateMovieLikedStatus = async (url: string, movieID: string, isLiked: boolean, getToken: GetTokenFunction) => {
+  const token = await getToken();
+
+  try {
+    const response = await fetch(`${url}/like/${movieID}`, {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isLiked }), // Send Liked status
+    });
+    
+    if (response.ok) {
+      console.log(response);
+      return true; 
+    } else {
+      throw new Error("No response from the server");
+    }
+  } catch (error) {
+    console.log(error);
+    return false; 
+  }
+};

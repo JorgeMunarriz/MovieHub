@@ -141,7 +141,8 @@ exports.Prisma.MoviesScalarFieldEnum = {
   updatedAt: 'updatedAt',
   usersId: 'usersId',
   imageUrl: 'imageUrl',
-  imageId: 'imageId'
+  imageId: 'imageId',
+  isLiked: 'isLiked'
 };
 
 exports.Prisma.PublicmoviesScalarFieldEnum = {

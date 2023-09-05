@@ -32,6 +32,7 @@ model Movies {
   usersId     String?   @db.ObjectId
   imageUrl    String?
   imageId     String?
+  isLiked     Boolean?
 }
 
 model Publicmovies {

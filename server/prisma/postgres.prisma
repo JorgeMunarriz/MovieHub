@@ -32,6 +32,7 @@ model Movies {
     usersId     Int?
     imageUrl    String?
     imageId     String?
+    isLiked     Boolean?
 }
 
 model Publicmovies {

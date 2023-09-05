@@ -2227,6 +2227,7 @@ export namespace Prisma {
     usersId: string | null
     imageUrl: string | null
     imageId: string | null
+    isLiked: boolean | null
   }
 
   export type MoviesMaxAggregateOutputType = {
@@ -2240,6 +2241,7 @@ export namespace Prisma {
     usersId: string | null
     imageUrl: string | null
     imageId: string | null
+    isLiked: boolean | null
   }
 
   export type MoviesCountAggregateOutputType = {
@@ -2254,6 +2256,7 @@ export namespace Prisma {
     usersId: number
     imageUrl: number
     imageId: number
+    isLiked: number
     _all: number
   }
 
@@ -2279,6 +2282,7 @@ export namespace Prisma {
     usersId?: true
     imageUrl?: true
     imageId?: true
+    isLiked?: true
   }
 
   export type MoviesMaxAggregateInputType = {
@@ -2292,6 +2296,7 @@ export namespace Prisma {
     usersId?: true
     imageUrl?: true
     imageId?: true
+    isLiked?: true
   }
 
   export type MoviesCountAggregateInputType = {
@@ -2306,6 +2311,7 @@ export namespace Prisma {
     usersId?: true
     imageUrl?: true
     imageId?: true
+    isLiked?: true
     _all?: true
   }
 
@@ -2407,6 +2413,7 @@ export namespace Prisma {
     usersId: string | null
     imageUrl: string | null
     imageId: string | null
+    isLiked: boolean | null
     _count: MoviesCountAggregateOutputType | null
     _avg: MoviesAvgAggregateOutputType | null
     _sum: MoviesSumAggregateOutputType | null
@@ -2440,6 +2447,7 @@ export namespace Prisma {
     usersId?: boolean
     imageUrl?: boolean
     imageId?: boolean
+    isLiked?: boolean
     genres?: boolean | Movies$genresArgs<ExtArgs>
     users?: boolean | Movies$usersArgs<ExtArgs>
     _count?: boolean | MoviesCountOutputTypeDefaultArgs<ExtArgs>
@@ -2457,6 +2465,7 @@ export namespace Prisma {
     usersId?: boolean
     imageUrl?: boolean
     imageId?: boolean
+    isLiked?: boolean
   }
 
   export type MoviesInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -2484,6 +2493,7 @@ export namespace Prisma {
       usersId: string | null
       imageUrl: string | null
       imageId: string | null
+      isLiked: boolean | null
     }, ExtArgs["result"]["movies"]>
     composites: {}
   }
@@ -2919,6 +2929,7 @@ export namespace Prisma {
     readonly usersId: FieldRef<"Movies", 'String'>
     readonly imageUrl: FieldRef<"Movies", 'String'>
     readonly imageId: FieldRef<"Movies", 'String'>
+    readonly isLiked: FieldRef<"Movies", 'Boolean'>
   }
     
 
@@ -5447,7 +5458,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     usersId: 'usersId',
     imageUrl: 'imageUrl',
-    imageId: 'imageId'
+    imageId: 'imageId',
+    isLiked: 'isLiked'
   };
 
   export type MoviesScalarFieldEnum = (typeof MoviesScalarFieldEnum)[keyof typeof MoviesScalarFieldEnum]
@@ -5545,6 +5557,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -5636,6 +5655,7 @@ export namespace Prisma {
     usersId?: StringNullableFilter<"Movies"> | string | null
     imageUrl?: StringNullableFilter<"Movies"> | string | null
     imageId?: StringNullableFilter<"Movies"> | string | null
+    isLiked?: BoolNullableFilter<"Movies"> | boolean | null
     genres?: GenresListRelationFilter
     users?: XOR<UsersNullableRelationFilter, UsersWhereInput> | null
   }
@@ -5652,6 +5672,7 @@ export namespace Prisma {
     usersId?: SortOrder
     imageUrl?: SortOrder
     imageId?: SortOrder
+    isLiked?: SortOrder
     genres?: GenresOrderByRelationAggregateInput
     users?: UsersOrderByWithRelationInput
   }
@@ -5671,6 +5692,7 @@ export namespace Prisma {
     usersId?: StringNullableFilter<"Movies"> | string | null
     imageUrl?: StringNullableFilter<"Movies"> | string | null
     imageId?: StringNullableFilter<"Movies"> | string | null
+    isLiked?: BoolNullableFilter<"Movies"> | boolean | null
     genres?: GenresListRelationFilter
     users?: XOR<UsersNullableRelationFilter, UsersWhereInput> | null
   }, "id">
@@ -5687,6 +5709,7 @@ export namespace Prisma {
     usersId?: SortOrder
     imageUrl?: SortOrder
     imageId?: SortOrder
+    isLiked?: SortOrder
     _count?: MoviesCountOrderByAggregateInput
     _avg?: MoviesAvgOrderByAggregateInput
     _max?: MoviesMaxOrderByAggregateInput
@@ -5709,6 +5732,7 @@ export namespace Prisma {
     usersId?: StringNullableWithAggregatesFilter<"Movies"> | string | null
     imageUrl?: StringNullableWithAggregatesFilter<"Movies"> | string | null
     imageId?: StringNullableWithAggregatesFilter<"Movies"> | string | null
+    isLiked?: BoolNullableWithAggregatesFilter<"Movies"> | boolean | null
   }
 
   export type PublicmoviesWhereInput = {
@@ -5930,6 +5954,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
     genres?: GenresCreateNestedManyWithoutMoviesInput
     users?: UsersCreateNestedOneWithoutMoviesInput
   }
@@ -5946,6 +5971,7 @@ export namespace Prisma {
     usersId?: string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
     genres?: GenresUncheckedCreateNestedManyWithoutMoviesInput
   }
 
@@ -5959,6 +5985,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     genres?: GenresUpdateManyWithoutMoviesNestedInput
     users?: UsersUpdateOneWithoutMoviesNestedInput
   }
@@ -5974,6 +6001,7 @@ export namespace Prisma {
     usersId?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     genres?: GenresUncheckedUpdateManyWithoutMoviesNestedInput
   }
 
@@ -5989,6 +6017,7 @@ export namespace Prisma {
     usersId?: string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
   }
 
   export type MoviesUpdateManyMutationInput = {
@@ -6001,6 +6030,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type MoviesUncheckedUpdateManyInput = {
@@ -6014,6 +6044,7 @@ export namespace Prisma {
     usersId?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type PublicmoviesCreateInput = {
@@ -6304,6 +6335,12 @@ export namespace Prisma {
     isSet?: boolean
   }
 
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+    isSet?: boolean
+  }
+
   export type GenresListRelationFilter = {
     every?: GenresWhereInput
     some?: GenresWhereInput
@@ -6331,6 +6368,7 @@ export namespace Prisma {
     usersId?: SortOrder
     imageUrl?: SortOrder
     imageId?: SortOrder
+    isLiked?: SortOrder
   }
 
   export type MoviesAvgOrderByAggregateInput = {
@@ -6349,6 +6387,7 @@ export namespace Prisma {
     usersId?: SortOrder
     imageUrl?: SortOrder
     imageId?: SortOrder
+    isLiked?: SortOrder
   }
 
   export type MoviesMinOrderByAggregateInput = {
@@ -6362,6 +6401,7 @@ export namespace Prisma {
     usersId?: SortOrder
     imageUrl?: SortOrder
     imageId?: SortOrder
+    isLiked?: SortOrder
   }
 
   export type MoviesSumOrderByAggregateInput = {
@@ -6416,6 +6456,15 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+    isSet?: boolean
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
     isSet?: boolean
   }
 
@@ -6606,6 +6655,11 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+    unset?: boolean
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
     unset?: boolean
   }
 
@@ -6824,6 +6878,12 @@ export namespace Prisma {
     isSet?: boolean
   }
 
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+    isSet?: boolean
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -6896,6 +6956,15 @@ export namespace Prisma {
     isSet?: boolean
   }
 
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+    isSet?: boolean
+  }
+
   export type MoviesCreateWithoutUsersInput = {
     id?: string
     title: string
@@ -6907,6 +6976,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
     genres?: GenresCreateNestedManyWithoutMoviesInput
   }
 
@@ -6921,6 +6991,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
     genres?: GenresUncheckedCreateNestedManyWithoutMoviesInput
   }
 
@@ -6964,6 +7035,7 @@ export namespace Prisma {
     usersId?: StringNullableFilter<"Movies"> | string | null
     imageUrl?: StringNullableFilter<"Movies"> | string | null
     imageId?: StringNullableFilter<"Movies"> | string | null
+    isLiked?: BoolNullableFilter<"Movies"> | boolean | null
   }
 
   export type GenresCreateWithoutMoviesInput = {
@@ -7121,6 +7193,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
     users?: UsersCreateNestedOneWithoutMoviesInput
   }
 
@@ -7136,6 +7209,7 @@ export namespace Prisma {
     usersId?: string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
   }
 
   export type MoviesCreateOrConnectWithoutGenresInput = {
@@ -7195,6 +7269,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     users?: UsersUpdateOneWithoutMoviesNestedInput
   }
 
@@ -7209,6 +7284,7 @@ export namespace Prisma {
     usersId?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type PublicmoviesUpsertWithoutGenresInput = {
@@ -7257,6 +7333,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     imageUrl?: string | null
     imageId?: string | null
+    isLiked?: boolean | null
   }
 
   export type MoviesUpdateWithoutUsersInput = {
@@ -7269,6 +7346,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     genres?: GenresUpdateManyWithoutMoviesNestedInput
   }
 
@@ -7282,6 +7360,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     genres?: GenresUncheckedUpdateManyWithoutMoviesNestedInput
   }
 
@@ -7295,6 +7374,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     imageId?: NullableStringFieldUpdateOperationsInput | string | null
+    isLiked?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type GenresCreateManyMoviesInput = {

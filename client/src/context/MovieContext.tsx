@@ -1,12 +1,16 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MoviesType } from "../types/moviehub.types";
-import { getDataApi } from "../api";
+import { getDataApi, updateMovieLikedStatus } from "../api";
+import { VITE_URL_MOVIES } from "../global/serverUrl";
 
 // Interface's context
 export interface MovieContextState {
   moviesData: MoviesType[];
   fetchMovies: () => void;
+  likedMovies: {[movieId: string]: boolean };
+  toggleLikedStatus: (movieId: string) => void; 
+
 }
 
 // CreateContext
@@ -17,7 +21,8 @@ type TypeProps = {
 };
 
 export const MovieProvider = (props: TypeProps) => {
-  const [moviesData, setMoviesData] = useState<MoviesType[]>([]);
+  const [moviesData, setMoviesData] = useState<MoviesType[]>([]); 
+  const [likedMovies, setLikedMovies] = useState<{ [movieId: string]: boolean }>({}); 
   const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
 
   const url = `users/${user?.email}`;
@@ -26,11 +31,23 @@ export const MovieProvider = (props: TypeProps) => {
     const data = await getDataApi(url, getAccessTokenSilently);
     setMoviesData(data.movies);
   }; 
+  const toggleLikedStatus = async (movieId: string) => {
+    try {
+      // Verifica si al usuario le gusta la película o no
+      const isLiked = likedMovies[movieId] || false;
 
-  // const deleteMovie = async (movieId: string) => {
+      // Llama a la función de servicio para actualizar el estado "liked" en el servidor
+      await updateMovieLikedStatus(VITE_URL_MOVIES, movieId, !isLiked, getAccessTokenSilently);
 
-  //   setMoviesData((prevMovies) => prevMovies.filter((movie) => movie.id !== movieId));
-  // };
+      // Actualiza el estado "likedMovies" para reflejar el cambio
+      setLikedMovies((prevLikedMovies) => ({
+        ...prevLikedMovies,
+        [movieId]: !isLiked,
+      }));
+    } catch (error) {
+      console.error("Failed to toggle 'liked' status:", error);
+    }
+  };
 
   useEffect(() => {
     if(!isAuthenticated){
@@ -39,7 +56,6 @@ export const MovieProvider = (props: TypeProps) => {
       const fetchInterval = setInterval(() => fetchMovies(), 1000);
       return () => clearInterval(fetchInterval);
     }
-      // fetchMovies()
     
   }, [url]);
   useEffect(() => {}, [moviesData]);
@@ -47,7 +63,12 @@ export const MovieProvider = (props: TypeProps) => {
   const contextValue: MovieContextState = {
     moviesData,
     fetchMovies,
+    likedMovies, 
+    toggleLikedStatus,
   };
 
   return <MovieContext.Provider value={contextValue}>{props.children}</MovieContext.Provider>;
 };
+
+
+

@@ -10,6 +10,8 @@ export * from './LogOut/LogOutButton';
 export * from './LogOut/logOutButton.styles';
 export * from './Modal/Modal';
 export * from './Modal/modal.styles';
+export * from './ModalDeleteMovie/ModalDeleteMovie';
+export * from './ModalDeleteMovie/modaldeleteMovie.styles';
 export * from './ModalUpdateMovie/ModalUpdateMovie';
 export * from './ModalUpdateMovie/modalUpdateMovie.styles';
 export * from './Profile/Profile';

@@ -38,17 +38,31 @@ export const CardsStyles = styled.div`
       height: 30px;
       width: 30px;
       border-radius: 50%;
-      z-index: 10;
+      z-index: 1;
       padding: 2px;
-      svg {
-        width: 80%;
-        height: 80%;
-        path {
+      &-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 1);
+        height: 100%;
+        width: 100%;
+        border: none;
+        border-radius: 50%;
+        z-index: 1;
+        padding: 2px;
+        color: #fff;
+        cursor: pointer;
+        svg {
           width: 80%;
-          color: rgba(250, 250, 250, 0.6);
-          transition: all 0.3s ease-in-out;
-          &:hover {
-            color: rgba(250, 250, 250, 1);
+          height: 80%;
+          path {
+            width: 80%;
+            color: rgba(210, 55, 55, 0.7);
+            transition: all 0.3s ease-in-out;
+            &:hover {
+              color: rgba(210, 55, 55, 1);
+            }
           }
         }
       }
@@ -117,7 +131,7 @@ export const CardsStyles = styled.div`
       cursor: pointer;
       transition: all 0.3s;
       &:hover {
-        background-color:  rgba(113, 113, 123, 0.9);
+        background-color: rgba(113, 113, 123, 0.9);
       }
     }
     &-div {

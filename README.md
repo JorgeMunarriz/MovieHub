@@ -25,7 +25,7 @@ In the user interface, you will be able to view all added movies in a list. Each
 
 Although the frontend of the application is important for user interaction, the main focus of this project is the backend. As you progress through the project, you will learn and apply different backend technologies and concepts, including Node.js, Express, MongoDB, Prisma, PostgreSQL, Auth0, and Cloudinary. You will learn how these technologies work together to support the functionalities of the application and provide a smooth user experience.
 
-`#react` `#express` `#vite` `#node` `#typescript` `#postgres` `#prisma` `#cloudinary` `#backend` `#assembler-institute-of-technology` `#master-in-software-engineering` `#jorgemunarrizdev.com` 
+`#react` `#express` `#vite` `#node` `#typescript` `#postgres` `#prisma` `#cloudinary` `lazy-loading` `skeleton` `styled-components` `#backend` `#assembler-institute-of-technology` `#master-in-software-engineering` `#jorgemunarrizdev.com` 
 
 ## Requirements
 
@@ -228,6 +228,7 @@ You can find me on LinkedIn, Facebook, and view my other projects on GitHub usin
 - [Auth0](https://auth0.com/)
 - [express-oauth2-jwt-bearer](https://www.npmjs.com/package/express-oauth2-jwt-bearer)
 - [Auth0 React SDK](https://auth0.com/docs/quickstart/spa/react)
+- [react-content-loader](https://www.npmjs.com/package/react-content-loader)
 
 
 

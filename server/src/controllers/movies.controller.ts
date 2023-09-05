@@ -42,6 +42,7 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
           year,
           score,
           country,
+          isLiked:false,
           // Connect genres using IDs
           genres: {
             connect: genreIDs.map((genreID: string) => ({ id: genreID })),
@@ -211,7 +212,6 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
 };
 
 
-
 export const deleteMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
 
@@ -256,35 +256,22 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
   }
 };
 
-//   const { movieID } = req.params;
+export const updateMovieLikedStatus = async (req: Request, res: Response): Promise<Response> => {
+  const { movieID } = req.params;
+  const { isLiked } = req.body;
 
-//   try {
-//     const movie = await prisma.movies.findMany({
-//       include: {
-//         users: true,
-//       },
-//     });
+  try {
+    // update liked state
+    await prismaClient.movies.update({
+      where: { id: convertToType(movieID) },
+      data: {
+        isLiked,
+      },
+    });
 
-//     const userID = users.
-
-//     if (userID) {
-//       // Remove the movie's title from the user's moviesArray
-//       await prisma.users.update({
-//         where: { id: userID },
-//         data: {
-//           moviesArray: { set: movie.users?.moviesArray.filter((title: string) => title !== movie.title) },
-//         },
-//       });
-//     }
-
-//     // Delete the movie
-//     await prisma.movies.deleteMany({
-
-//     });
-
-//     return res.status(200).send({ status: "Success", msg: "Deleted movies" });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).send(error);
-//   }
-// };
+    return res.status(200).json({ status: "Success", message: "Movie liked status updated" });
+  } catch (error) {
+    console.error("Error updating like status on movie:", error);
+    return res.status(500).json({ status: "Error", message: "Internal Server Error" });
+  }
+};
