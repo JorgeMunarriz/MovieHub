@@ -65,6 +65,25 @@ export const getUserByID = async (req: Request, res: Response): Promise<Response
     return res.status(500).json(error);
   }
 };
+export const getUserByEmail = async (req: Request, res: Response): Promise<Response> => {
+  const { userID } = req.params;
+  try {
+    const userById = await prismaClient.users.findUnique({
+      where: { email: userID },
+      include: {
+        movies: {
+          include: {
+            genres: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json(userById);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 
 export const updateUserByID = async (req: Request, res: Response): Promise<Response> => {
   const { userID } = req.params;

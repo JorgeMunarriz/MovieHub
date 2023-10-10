@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 
 export const checkFourCharacters = (req: Request, res: Response, next: NextFunction) => {
-    console.log('check middleware');
+    
     const {name} = req.body;
 
     if (name.length < 4) {
@@ -12,7 +12,7 @@ export const checkFourCharacters = (req: Request, res: Response, next: NextFunct
     next();
 }
 export const checkTwoCharacters = (req: Request, res: Response, next: NextFunction) => {
-    console.log('check middleware');
+    
     const {name} = req.body;
 
     if (name.length < 2) {

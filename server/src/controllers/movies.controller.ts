@@ -5,7 +5,7 @@ import fs from "fs-extra";
 import { convertToType } from "../utils/convertToType";
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
-  let { title, year, score, country, genres } = req.body;
+  let { title, year, score, country, genres, description } = req.body;
 
   const { userID } = req.params;
 
@@ -13,8 +13,9 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
   if (typeof year !== "number") year = Number(year);
   if (typeof score !== "number") score = Number(score);
   if (typeof country !== "string") country = country.toString();
+
   if (typeof genres === "string") {
-    genres = genres.split(',').map((genre: string) => genre.trim());
+    genres = genres.split(",").map((genre: string) => genre.trim());
   }
 
   try {
@@ -42,7 +43,8 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
           year,
           score,
           country,
-          isLiked:false,
+          description,
+          isLiked: false,
           // Connect genres using IDs
           genres: {
             connect: genreIDs.map((genreID: string) => ({ id: genreID })),
@@ -68,10 +70,11 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
           moviesArray: { push: newMovie.title },
         },
       });
-      
 
       return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
     }
+    console.log(res)
+
     return res.status(404).send("File not found");
   } catch (error) {
     console.log(error);
@@ -83,9 +86,9 @@ export const getMovieByID = async (req: Request, res: Response): Promise<Respons
   const { movieID } = req.params;
   try {
     const movie = await prismaClient.movies.findUnique({
-      where: { id:convertToType(movieID)  },
+      where: { id: convertToType(movieID) },
       include: { genres: true },
-    })
+    });
 
     if (!movie) {
       return res.status(404).send({ msg: "Movie not found" });
@@ -111,20 +114,42 @@ export const getAllMovies = async (req: Request, res: Response): Promise<Respons
     return res.status(500).send(error);
   }
 };
+export const getAllMoviesByUser = async (req: Request, res: Response): Promise<Response> => {
+  const {userEmail} = req.params
+  try {
+    const movies = await prismaClient.movies.findMany({
+      
+      include: {
+        genres: true,
+      },
+      users: {
+        connect: {
+          email: userEmail,
+        }
+      }
+    });
+
+    return res.status(200).send(movies);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
 interface Genre {
-  genre: string
+  genre: string;
 }
 
 export const updateMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  let { title, score, year, country, genres } = req.body;
+  let { title, score, year, country, genres, description } = req.body;
 
   if (typeof title !== "string") title = title.toString();
   if (typeof year !== "number") year = Number(year);
   if (typeof score !== "number") score = Number(score);
   if (typeof country !== "string") country = country.toString();
+  // if (typeof description !== "string") description = description.toString();
+
   if (typeof genres === "string") {
-    genres = genres.split(',').map((genre: string) => genre.trim());
+    genres = genres.split(",").map((genre: string) => genre.trim());
   }
 
   try {
@@ -154,16 +179,14 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
       return res.status(404).json({ error: "Movie not found" });
     }
 
- 
-// Find the names of the current genres
+    // Find the names of the current genres
     const currentGenres = movie.genres || [];
 
     // Encuentra los nombres de los géneros actuales
     const currentGenresArray: string[] = currentGenres.map((genre: { genre: string }) => genre.genre);
     const genresToRemove: string[] = currentGenresArray.filter((genre: string) => !genres.includes(genre));
-    
 
-   // Remove genres that are no longer in the movie
+    // Remove genres that are no longer in the movie
 
     for (const genreNameToRemove of genresToRemove) {
       await prismaClient.genres.deleteMany({
@@ -178,6 +201,7 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
       score,
       year,
       country,
+      description,
       genres: { connect: genreIDs.map((genreID: string) => ({ id: convertToType(genreID) })) },
     };
 
@@ -198,7 +222,7 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
 
     // Apdate genresArray
     await prismaClient.movies.update({
-      where: { id:  convertToType(movieID)  },
+      where: { id: convertToType(movieID) },
       data: {
         genresArray: updatedGenresArray,
       },
@@ -211,14 +235,13 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
   }
 };
 
-
 export const deleteMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
 
   try {
     //Find Movie by id
     const movie = await prismaClient.movies.findUnique({
-      where: { id:  convertToType(movieID)  },
+      where: { id: convertToType(movieID) },
       include: {
         users: true,
       },
@@ -226,9 +249,8 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
 
     if (!movie) {
       return res.status(404).send({ status: "Error", msg: "Movie not found" });
-    }else {      
-        await deleteImage(movie.imageId)
-      
+    } else {
+      await deleteImage(movie.imageId);
     }
 
     const userID = movie.users?.id;
@@ -249,7 +271,6 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
     });
 
     return res.status(200).send({ status: "Success", msg: "Deleted movie by ID" });
-    
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);

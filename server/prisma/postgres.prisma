@@ -33,6 +33,7 @@ model Movies {
     imageUrl    String?
     imageId     String?
     isLiked     Boolean?
+    description String?
 }
 
 model Publicmovies {
