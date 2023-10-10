@@ -38,7 +38,7 @@ const Cards = ({ ...props }: MoviesType) => {
       </div>
       <div className="card__main">
         <p className="card__main-country">
-          {props.country},{props.year}
+          {props.country}, {props.year}
         </p>
         <h2 className="card__main-titleMovie">{props.title}</h2>
         <h3 className="card__main-scoreMovie">
