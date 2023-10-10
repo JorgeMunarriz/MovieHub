@@ -16,7 +16,7 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
     });
 
     if (existingUser) {
-      return res.status(409).json("User with this email already exists" );
+      return res.status(200).json("User with this email already exists" );
     }
     const newUser = await prismaClient.users.create({
       data: { name, email, moviesArray },

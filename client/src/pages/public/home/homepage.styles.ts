@@ -3,12 +3,11 @@ import styled from "styled-components";
 export const HomePageStyles = styled.div`
 position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
-  overflow: auto;
-  padding-top: 1rem;
+  overflow: scroll;
   
   .homePage {
     display: flex;

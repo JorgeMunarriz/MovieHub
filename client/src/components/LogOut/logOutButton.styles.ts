@@ -12,6 +12,12 @@ export const ButtonStyles = styled.button`
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s;
+    font-size: 1rem;
+    svg {
+        width: 15px;
+        height: 15px;
+        
+    }
     &:hover{
         background-color: rgba(230, 55, 55, 0.9);
     }

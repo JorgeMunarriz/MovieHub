@@ -17,13 +17,15 @@ export const FooterStyles = styled.footer`
       gap: 1rem;
       &-list {
         &-link {
+          font-size: 15px;
           svg {
             path {
+              transition: all 0.3s ease-in-out;
               color: rgba(250, 250, 250, 0.6);
-              &:hover {
-                color: rgba(250, 250, 250, 1);
-              }
             }
+          }
+          &:hover svg path {
+            color: rgba(250, 250, 250, 1);
           }
         }
       }

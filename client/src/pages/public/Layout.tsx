@@ -24,7 +24,7 @@ export const Layout = () => {
         <LayoutPage>
           <ButtonTheme/>
             <Header />            
-            <main className="regularPages__grid">
+            <main className="regularPages__grid" >
                 <Outlet/>                
             </main>
             <Footer />

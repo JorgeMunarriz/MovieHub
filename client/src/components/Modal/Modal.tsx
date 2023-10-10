@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { VITE_URL_MOVIES } from "../../global/serverUrl";
 import { createMovie } from "../../api";
 import { useMovieContext } from "../../hooks/useContextHook";
+import { BsPlusCircle } from "react-icons/bs";
 
 
 export const Modal = () => {
@@ -48,7 +49,7 @@ export const Modal = () => {
     <ModalStyles>
       {isAuthenticated && (
         <button className="modal__btn-open" onClick={toggleModal}>
-          {" "}
+          <BsPlusCircle/>
           Add{" "}
         </button>
       )}

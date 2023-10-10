@@ -61,10 +61,12 @@ h6 {
 }
 :root{
   background-color: var(--background-light);
-  --background-dark: rgba(20, 20, 20, 0.829);
+  --background-dark: rgb(53, 53, 53);
+  --background-dark-hover: rgb(37, 37, 37);
   --background-light: rgba(214, 212, 212, 0.815);
-  --text-dark: rgba(255, 255, 255, 0);
-  --text-light: rgba(255, 255, 255, 0);
+  --background-light-hover: rgba(179, 178, 178, 0.815);
+  --text-dark: rgba(7, 7, 7, 0.808);
+  --text-light: rgb(197, 196, 196);
   --title-h1-light:rgba(255, 255, 255, 0.8);
   --title-h2-light: rgba(46, 45, 45, 0.8);
   --title-h3-light: rgba(255, 255, 255, 0.8);
@@ -142,7 +144,7 @@ h6 {
 .dark {
   transition: all 0.5s ease-in-out;
   /* background: radial-gradient(circle, rgba(27, 0, 0, 0.903) 0%, rgba(0, 0, 0, 0.635) 76%, rgba(14, 14, 23, 0.594) 89%); */
-  background-color: rgba(20, 20, 20, 0.829);
+  background-color: var(--background-dark);
 }
 .dark .homePage__header-title {
   transition: all 0.5s ease-in-out;
@@ -152,4 +154,11 @@ h6 {
   transition: all 0.5s ease-in-out;
   color: rgba(247, 245, 245, 0.8);
   background-color: rgba(48, 47, 47, 0.7);
+  .card__footer-detailsLink{
+    background-color: rgba(218, 216, 216, 0.7);
+    &:hover{
+      background-color: rgba(218, 216, 216, 0.9);
+
+    }
+  }
 }
