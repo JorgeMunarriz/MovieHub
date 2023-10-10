@@ -1,3 +1,4 @@
+
 import { FooterStyles } from './footer.styles'
 import { BsFacebook, BsGithub, BsInstagram, BsTwitter, BsYoutube} from 'react-icons/bs'
 

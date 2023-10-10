@@ -16,9 +16,7 @@ import { GetTokenFunction  } from "../types/moviehub.types";
       body: JSON.stringify(data),
     });
 
-    if (response.ok) {
-      console.log(response);
-    } else {
+    if (!response.ok) {
       throw new Error("No response at server");
     }
   } catch (error) {

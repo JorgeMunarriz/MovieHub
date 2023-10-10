@@ -16,7 +16,7 @@ const LazyCards: LazyExoticComponent<ComponentType<any>> = lazy(() => {
     return new Promise((resolve) => {
       setTimeout(() => {
         return resolve(import("../Cards/Cards"));
-      }, 2500);
+      }, 500);
     });
 
 });

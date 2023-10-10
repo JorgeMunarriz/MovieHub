@@ -34,8 +34,7 @@ export const updateUserByID = async (id: string) => {
     const response = await fetch(VITE_URL_USERS + `/${id}`);
     const userById = await response.json();
 
-    console.log("funciona");
-    console.log(userById);
+    
 
     return userById;
   } catch (error) {

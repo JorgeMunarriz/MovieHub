@@ -7,14 +7,16 @@ export const SideBar = () => {
 
   const toggleSideBar = () => {
     setIsOpen(!isOpen);
+    const sidebar = document.getElementById("sidebarId")
+    sidebar?.classList.toggle("show")
   };
   return (
-    <SideBarStyles>
+    <SideBarStyles id="sidebarId">
       <button className="buttonOpenCloseSidebar"  onClick={toggleSideBar}>
        {!isOpen ? ( <BsFilterSquareFill />) : ( <BsX />)}
       </button>
       {isOpen && (
-        <div className="sidebar">
+        <div className="sidebar" id="sidebarId">
           <div className="sidebar__header">
             <h4 className="sidebar__header-title">Filters:</h4>
           </div>

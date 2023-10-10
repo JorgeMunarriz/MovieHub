@@ -20,6 +20,7 @@ export interface UserTypes {
     updatedAt: string;
     users?: UserTypes; // Opcionalmente, puedes incluir la relación inversa si la necesitas
     isLiked?: boolean;
+    description?: string;
     
   }
   
@@ -50,6 +51,7 @@ export interface UserTypes {
     createdAt: string;
     updatedAt: string;
     users?: UserTypes;
+    description: string
   }
 
   

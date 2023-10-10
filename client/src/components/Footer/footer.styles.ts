@@ -36,8 +36,7 @@ export const FooterStyles = styled.footer`
       gap: 1rem;
 
       &-list {
-      color: rgba(250, 250, 250, 1);
-        
+        color: rgba(250, 250, 250, 1);
       }
     }
   }

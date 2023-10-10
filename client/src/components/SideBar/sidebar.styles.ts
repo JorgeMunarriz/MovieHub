@@ -5,8 +5,10 @@ export const SideBarStyles = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 10%;
   transition: all 0.5s ease-in-out;
+  position: absolute;
+  top: 20px;
+  left: 30px;
   .buttonOpenCloseSidebar {
     height: 40px;
     width: 40px;
@@ -32,19 +34,24 @@ export const SideBarStyles = styled.div`
         transition: all 0.3s ease-in-out;
         &:hover {
           color: rgba(255, 255, 255, 1);
-          
         }
       }
     }
-    &:hover{
+    &:hover {
       transform: scale(1.2);
     }
   }
-  .sidebar {
+   .shown{
+    
+   }
+  .sidebar  {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+
     &__header {
       display: flex;
       align-items: center;

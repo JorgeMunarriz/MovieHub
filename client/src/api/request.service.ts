@@ -25,10 +25,8 @@ export const createMovie = async (url: string, data: MovieFormData, getToken: Ge
       },
       body: formData,
     });
-    console.log("formdata", formData);
-    if (response.ok) {
-      console.log(response);
-    } else {
+    
+    if (!response.ok) {
       throw new Error("No response from the server");
     }
   } catch (error) {
@@ -43,6 +41,7 @@ export const updateMovie = async (url: string, data: MovieFormData, getToken: Ge
   formData.append("year", data.year.toString());
   formData.append("score", data.score.toString());
   formData.append("country", data.country);
+  formData.append("description", data.description);
   if (Array.isArray(data.genres)) {
     for (const genre of data.genres) {
       formData.append("genres", genre);
@@ -51,6 +50,7 @@ export const updateMovie = async (url: string, data: MovieFormData, getToken: Ge
   if (data.image) {
     formData.append("image", data.image[0]);
   }
+  console.log(formData)
 
   try {
     const response = await fetch(url, {
@@ -60,9 +60,7 @@ export const updateMovie = async (url: string, data: MovieFormData, getToken: Ge
       },
       body: formData,
     });
-    if (response.ok) {
-      console.log(response);
-    } else {
+    if (!response.ok) {
       throw new Error("No response from the server");
     }
   } catch (error) {
@@ -80,11 +78,8 @@ export const deleteMovie = async (url: string, getToken: GetTokenFunction) => {
         authorization: `Bearer ${token}`,
       },
     });
-    console.log("funcionando");
-    if (response.ok) {
-      console.log(response);
-    } else {
-      throw new Error("No response at server");
+    if (!response.ok) {
+      throw new Error("No response from the server");
     }
   } catch (error) {
     console.log(error);
@@ -100,12 +95,8 @@ export const getMovieById = async (url: string, getToken: GetTokenFunction) => {
         authorization: `Bearer ${token}`,
       },
     });
-    if (response.ok) {
-      const movieData = response.json();
-      console.log(movieData);
-      return movieData;
-    } else {
-      throw new Error("No response at server");
+    if (!response.ok) {
+      throw new Error("No response from the server");
     }
   } catch (error) {
     console.log(error);
@@ -127,7 +118,6 @@ export const updateMovieLikedStatus = async (url: string, movieID: string, isLik
     });
     
     if (response.ok) {
-      console.log(response);
       return true; 
     } else {
       throw new Error("No response from the server");

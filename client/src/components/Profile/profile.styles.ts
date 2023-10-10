@@ -11,7 +11,7 @@ display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     &__div{
         display: flex;
         width: 100px;

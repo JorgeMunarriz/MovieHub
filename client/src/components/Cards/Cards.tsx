@@ -6,24 +6,25 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { ModalDeleteMovie, ModalUpdateMovie } from "..";
 import { MoviesType } from "../../types/moviehub.types";
 import { useMovieContext } from "../../hooks/useContextHook";
-import { useState } from "react";
 
 const Cards = ({ ...props }: MoviesType) => {
   const {  isAuthenticated } = useAuth0();
-  const {  toggleLikedStatus } = useMovieContext();
-  const [ isLikedButton, setIsLikedButton ] = useState(false);
+  const {  toggleLikedStatus, likedMovies } = useMovieContext();
+
+  const isLikedMovie = likedMovies[props.id] || false
+  likedMovies[props.id]
 
   const handleLiked = async () => {
     await toggleLikedStatus(props.id);
-    setIsLikedButton(!isLikedButton); 
   };
 
   return (
     <CardsStyles>
+      
       <div className="card__header">
         <img className="card__header-img" src={props.imageUrl} alt={props.title} />
-        <div className="card__header-divHeart">
-        {isLikedButton ? (
+        {isAuthenticated && <div className="card__header-divHeart">
+        {isLikedMovie ? (
                 <button className="card__header-divHeart-button" onClick={handleLiked}>
                   <BsHeartFill />
                 </button>
@@ -32,7 +33,8 @@ const Cards = ({ ...props }: MoviesType) => {
                   <BsHeart />
                 </button>
               )}
-        </div>
+        </div>}
+        
       </div>
       <div className="card__main">
         <p className="card__main-country">
@@ -40,10 +42,8 @@ const Cards = ({ ...props }: MoviesType) => {
         </p>
         <h2 className="card__main-titleMovie">{props.title}</h2>
         <h3 className="card__main-scoreMovie">
-          Score: <img className="card__main-scoreMovie-imdbLogo" src={image} alt={image} /> {props.score}/100
+          Score: {props.score}/100 <img className="card__main-scoreMovie-imdbLogo" src={image} alt={image} /> 
         </h3>
-        <p></p>
-
         <div className="card__main-div">
           <h3 className="card__main-div-genreMovie">
             Genres:
@@ -53,10 +53,11 @@ const Cards = ({ ...props }: MoviesType) => {
           </h3>
         </div>
         <div className="card__footer">
+          {isAuthenticated && (
+            <>
           <Link className="card__footer-detailsLink" to={`movie/${props.id}`}>
             Details{" "}
           </Link>
-          {isAuthenticated && (
             <div className="card__footer-div">
             <ModalDeleteMovie key={props.id} {...props}/>
               <ModalUpdateMovie
@@ -75,6 +76,7 @@ const Cards = ({ ...props }: MoviesType) => {
                 imageUrl={props.imageUrl}
               />
             </div>
+            </>
           )}
         </div>
       </div>

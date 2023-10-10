@@ -8,9 +8,8 @@ import { VITE_URL_MOVIES } from "../global/serverUrl";
 export interface MovieContextState {
   moviesData: MoviesType[];
   fetchMovies: () => void;
-  likedMovies: {[movieId: string]: boolean };
-  toggleLikedStatus: (movieId: string) => void; 
-
+  likedMovies: { [movieId: string]: boolean };
+  toggleLikedStatus: (movieId: string) => void;
 }
 
 // CreateContext
@@ -21,16 +20,27 @@ type TypeProps = {
 };
 
 export const MovieProvider = (props: TypeProps) => {
-  const [moviesData, setMoviesData] = useState<MoviesType[]>([]); 
-  const [likedMovies, setLikedMovies] = useState<{ [movieId: string]: boolean }>({}); 
+  const [moviesData, setMoviesData] = useState<MoviesType[]>([]);
+  const [likedMovies, setLikedMovies] = useState<{ [movieId: string]: boolean }>({});
   const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
 
   const url = `users/${user?.email}`;
 
-  const fetchMovies = async () => {
-    const data = await getDataApi(url, getAccessTokenSilently);
-    setMoviesData(data.movies);
-  }; 
+  const fetchMoviesAndLikedStatus = async () => {
+    try {
+      const data = await getDataApi(url, getAccessTokenSilently);
+      setMoviesData(data.movies);
+      // Configura el estado likedMovies con los datos de la API
+      const initialLikedMovies: { [movieId: string]: boolean } = {};
+      data.movies.forEach((movie) => {
+        initialLikedMovies[movie.id] = movie.isLiked;
+      });
+      setLikedMovies(initialLikedMovies);
+    } catch (error) {
+      console.error("Failed to fetch movies and liked status:", error);
+    }
+  };
+
   const toggleLikedStatus = async (movieId: string) => {
     try {
       // Verifica si al usuario le gusta la película o no
@@ -50,25 +60,22 @@ export const MovieProvider = (props: TypeProps) => {
   };
 
   useEffect(() => {
-    if(!isAuthenticated){
-      return
+    if (!isAuthenticated) {
+      return;
     } else {
-      const fetchInterval = setInterval(() => fetchMovies(), 1000);
+      // Llama a la función para cargar las películas y los estados de "gustar"
+      fetchMoviesAndLikedStatus();
+      const fetchInterval = setInterval(() => fetchMoviesAndLikedStatus(), 1000);
       return () => clearInterval(fetchInterval);
     }
-    
   }, [url]);
-  useEffect(() => {}, [moviesData]);
 
   const contextValue: MovieContextState = {
     moviesData,
-    fetchMovies,
-    likedMovies, 
+    fetchMovies: fetchMoviesAndLikedStatus, // Actualiza la función fetchMovies para cargar los datos
+    likedMovies,
     toggleLikedStatus,
   };
 
   return <MovieContext.Provider value={contextValue}>{props.children}</MovieContext.Provider>;
 };
-
-
-

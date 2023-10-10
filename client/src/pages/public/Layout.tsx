@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { postApi } from "../../api/postApi";
 import { VITE_URL_USERS } from "../../global/serverUrl";
 import { LayoutPage } from './layoutPage.styles';
+import { ButtonTheme } from "../../components/ChangeTheme/ButtonTheme";
 
 
 export const Layout = () => {
@@ -21,6 +22,7 @@ export const Layout = () => {
 
     return (
         <LayoutPage>
+          <ButtonTheme/>
             <Header />            
             <main className="regularPages__grid">
                 <Outlet/>                

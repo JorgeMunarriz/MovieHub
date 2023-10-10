@@ -23,11 +23,7 @@ export const ModalDeleteMovie = ({ id }: MoviesType) => {
     if (modalIsOpen) {
       const url = `${VITE_URL_MOVIES}/${id}`;
       getMovieById(url, getAccessTokenSilently).then((movie) => {
-        if (movie) {
-          console.log(movie);
-        } else {
-          console.log("Movie not found");
-        }
+        
         return movie;
       });
     }

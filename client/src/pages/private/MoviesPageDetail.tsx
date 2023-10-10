@@ -13,8 +13,7 @@ export const MoviesPageDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [movieData, setMovieData] = useState<MoviesType>();
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
-  const [ isLikedButton, setIsLikedButton ] = useState(false);
-  const {  toggleLikedStatus } = useMovieContext();
+  const {  toggleLikedStatus, likedMovies } = useMovieContext();
 
   const url = `movies/${id}`;
 
@@ -22,7 +21,6 @@ export const MoviesPageDetail = () => {
     const fetchMovie = async () => {
       const data = await getDataApi(url, getAccessTokenSilently);
       setMovieData(data);
-      setIsLikedButton(data.isLiked);
       return data;
     };
     fetchMovie();
@@ -31,9 +29,13 @@ export const MoviesPageDetail = () => {
   if (!movieData) {
     return <div>Movie Page not found</div>;
   }
+
+
+  const isLikedMovie = likedMovies[id] || false
+  likedMovies[id]
+
   const handleLiked = async () => {
-    await toggleLikedStatus(movieData.id);
-    setIsLikedButton(!isLikedButton); 
+    await toggleLikedStatus(id);
   };
 
   return (
@@ -46,7 +48,7 @@ export const MoviesPageDetail = () => {
           <h2 className="movieDetails__main-titleMovie">
             {movieData.title}
             <div className="movieDetails__main-titleMovie-divHeart">
-              {!isLikedButton ? (
+              {isLikedMovie ? (
                 <button className="movieDetails__main-titleMovie-divHeart-button" onClick={handleLiked}>
                   <BsHeartFill />
                 </button>
@@ -58,10 +60,10 @@ export const MoviesPageDetail = () => {
             </div>
           </h2>
           <p className="movieDetails__main-country">
-            {movieData.country},{movieData.year}
+           Country: {movieData.country},{movieData.year}
           </p>
           <h3 className="movieDetails__main-scoreMovie">
-            Score: <img className="movieDetails__main-scoreMovie-imdbLogo" src={imageImdb} alt="IMDB-logo" /> {movieData.score}/100
+            Score:{movieData.score}/100 <img className="movieDetails__main-scoreMovie-imdbLogo" src={imageImdb} alt="IMDB-logo" /> 
           </h3>
           <div className="movieDetails__main-div">
             <h3 className="movieDetails__main-div-genreTitle">

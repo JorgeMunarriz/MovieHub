@@ -1,24 +1,25 @@
 import styled from "styled-components";
 
 export const HomePageStyles = styled.div`
+position: relative;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
   overflow: auto;
+  padding-top: 1rem;
   
   .homePage {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
     &__header {
       display: flex;
       justify-content: center;
       text-align: center;
       &-title {
         font-size: 2rem;
-        color: rgba(250, 250, 250, 0.6);
         text-decoration: underline;
       }
     }
@@ -28,7 +29,7 @@ export const HomePageStyles = styled.div`
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 0.5vw;
+      padding: 30px 0.5vh;
       gap: 1vw;
     }
     &__footer {

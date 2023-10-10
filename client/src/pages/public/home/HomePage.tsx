@@ -8,7 +8,7 @@ export const HomePage = () => {
 
   return (
     <HomePageStyles>
-      <SideBar/>
+      <SideBar />
       <div className="homePage">
       <div className="homePage__header">
         { !isAuthenticated ? <h2 className="homePage__header-title">Public List of Movies</h2>: 
