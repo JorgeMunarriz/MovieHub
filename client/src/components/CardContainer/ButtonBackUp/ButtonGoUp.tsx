@@ -1,7 +1,6 @@
+import { BsArrowUp } from "react-icons/bs";
 import ButtonGoUpStyles from "./buttonGoUp.styles";
 import { useEffect } from "react";
-
-
 
 export const ButtonGoUp = () => {
   const handleGoUpClick = () => {
@@ -23,9 +22,8 @@ export const ButtonGoUp = () => {
     const height = 200;
 
     const handleScroll = () => {
-      console.log("Scroll detectado");
       if (mainContainer.scrollTop > height) {
-        goUpButton.style.display = "block";
+        goUpButton.style.display = "flex";
       } else {
         goUpButton.style.display = "none";
       }
@@ -33,14 +31,14 @@ export const ButtonGoUp = () => {
 
     mainContainer.addEventListener("scroll", handleScroll);
 
-   
-
     return () => {
       mainContainer.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <ButtonGoUpStyles id="goUpButton" onClick={handleGoUpClick}>Go up</ButtonGoUpStyles>
+    <ButtonGoUpStyles id="goUpButton" onClick={handleGoUpClick}>
+      Go up <BsArrowUp/>
+    </ButtonGoUpStyles>
   );
 };

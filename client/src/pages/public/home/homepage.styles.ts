@@ -7,7 +7,7 @@ position: relative;
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
   
   .homePage {
     display: flex;

@@ -162,3 +162,9 @@ h6 {
     }
   }
 }
+.dark #goUpButton {
+  background-color: var(--background-light);
+  &:hover {
+    background-color: var(--background-light-hover);
+  }
+}
