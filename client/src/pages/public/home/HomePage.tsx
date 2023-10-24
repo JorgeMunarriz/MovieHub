@@ -28,7 +28,7 @@ export const HomePage = () => {
       <div className="homePage__main">
          <CardContainer query={query}/>
       </div>
-      <div className="homePage__footer">95
+      <div className="homePage__footer">
         <button className="homePage__footer-buttonViewMore">View more</button>
       </div>
       </div>
