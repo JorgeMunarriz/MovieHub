@@ -10,7 +10,7 @@ import { ButtonTheme } from "../../components/ChangeTheme/ButtonTheme";
 
 export const Layout = () => {
   const {user, getAccessTokenSilently, isAuthenticated} = useAuth0();
-  // const url = "http://localhost:3005/users"
+  
   
 
   useEffect(() => {

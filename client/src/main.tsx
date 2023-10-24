@@ -11,9 +11,9 @@ const theme = currentHour >= 6 && currentHour < 18 ? "light" : "dark";
 document.body.classList.add(theme)
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  //<React.StrictMode>
+  
     <Auth0Provider domain={domain} clientId={clientId} authorizationParams={{ redirect_uri: redirectUri, audience: audience }}>
       <App />
     </Auth0Provider>
-  //</React.StrictMode>
+  
 );

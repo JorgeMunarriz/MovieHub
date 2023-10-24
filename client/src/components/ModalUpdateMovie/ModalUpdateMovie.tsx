@@ -25,12 +25,12 @@ export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray,
         if (movie) {
           setMovieData({
             title: movie.title,
-            year: movie.year,
             score: movie.score,
+            year: movie.year,
             country: movie.country,
-            genresArray: movie.genresArray,
             image: movie.image,
             genres: movie.genres,
+            genresArray: movie.genresArray,
             description: movie.description
           });
           setImagePreview(movie.imageUrl);

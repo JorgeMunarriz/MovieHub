@@ -18,7 +18,7 @@ export interface UserTypes {
     genresArray: string[];
     createdAt: string;
     updatedAt: string;
-    users?: UserTypes; // Opcionalmente, puedes incluir la relación inversa si la necesitas
+    users?: UserTypes; 
     isLiked?: boolean;
     description?: string;
     
@@ -29,7 +29,7 @@ export interface UserTypes {
     genre: string;
     createdAt: string;
     updatedAt: string;
-    movies?: MoviesType[]; // Opcionalmente, puedes incluir la relación inversa si la necesitas
+    movies?: MoviesType[]; 
   }
   
   export interface ImageType {

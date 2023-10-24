@@ -13,7 +13,7 @@ export const MoviesPageDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [movieData, setMovieData] = useState<MoviesType>();
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
-  const {  toggleLikedStatus, likedMovies } = useMovieContext();
+  const { toggleLikedStatus, likedMovies } = useMovieContext();
 
   const url = `movies/${id}`;
 
@@ -29,10 +29,13 @@ export const MoviesPageDetail = () => {
   if (!movieData) {
     return <div>Movie Page not found</div>;
   }
+  if (!id) {
+    return <div>Movie Page not found</div>;
+  }
 
+  const isLikedMovie = likedMovies && id ? likedMovies[id] || false : false;
 
-  const isLikedMovie = likedMovies[id] || false
-  likedMovies[id]
+  likedMovies[id];
 
   const handleLiked = async () => {
     await toggleLikedStatus(id);
@@ -60,18 +63,16 @@ export const MoviesPageDetail = () => {
             </div>
           </h2>
           <p className="movieDetails__main-country">
-           Country: {movieData.country},{movieData.year}
+            Country: {movieData.country},{movieData.year}
           </p>
           <h3 className="movieDetails__main-scoreMovie">
-            Score:{movieData.score}/100 <img className="movieDetails__main-scoreMovie-imdbLogo" src={imageImdb} alt="IMDB-logo" /> 
+            Score:{movieData.score}/100 <img className="movieDetails__main-scoreMovie-imdbLogo" src={imageImdb} alt="IMDB-logo" />
           </h3>
           <div className="movieDetails__main-div">
-            <h3 className="movieDetails__main-div-genreTitle">
-              Genres:
-            </h3>
-              <ul className="movieDetails__main-div-ul">
-                <li className="movieDetails__main-div-ul-genresList">{movieData?.genresArray.join(", ")}</li>
-              </ul>
+            <h3 className="movieDetails__main-div-genreTitle">Genres:</h3>
+            <ul className="movieDetails__main-div-ul">
+              <li className="movieDetails__main-div-ul-genresList">{movieData?.genresArray.join(", ")}</li>
+            </ul>
           </div>
           {isAuthenticated && (
             <div className="movieDetails__footer">

@@ -32,8 +32,8 @@ export const MovieProvider = (props: TypeProps) => {
       setMoviesData(data.movies);
       // Configura el estado likedMovies con los datos de la API
       const initialLikedMovies: { [movieId: string]: boolean } = {};
-      data.movies.forEach((movie) => {
-        initialLikedMovies[movie.id] = movie.isLiked;
+      data.movies.forEach((movie: MoviesType) => {
+        initialLikedMovies[movie.id] = movie.isLiked !== undefined ? movie.isLiked : false;
       });
       setLikedMovies(initialLikedMovies);
     } catch (error) {

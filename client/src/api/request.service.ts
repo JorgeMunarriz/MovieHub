@@ -1,4 +1,4 @@
-import { GetTokenFunction, MovieFormData } from "../types/moviehub.types";
+import { GetTokenFunction, MovieFormData, MoviesType } from "../types/moviehub.types";
 
 export const createMovie = async (url: string, data: MovieFormData, getToken: GetTokenFunction) => {
   const token = await getToken();
@@ -98,10 +98,16 @@ export const getMovieById = async (url: string, getToken: GetTokenFunction) => {
     if (!response.ok) {
       throw new Error("No response from the server");
     }
+
+    const movie = await response.json() as MoviesType;
+    return movie;
   } catch (error) {
     console.log(error);
+    return null; 
   }
 };
+
+
 
 
 export const updateMovieLikedStatus = async (url: string, movieID: string, isLiked: boolean, getToken: GetTokenFunction) => {
