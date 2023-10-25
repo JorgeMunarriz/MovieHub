@@ -18,7 +18,7 @@ export const getGenreByID = async (req: Request, res: Response): Promise<Respons
   const { genreID } = req.params;
   try {
     const genre = await prismaClient.genres.findUnique({
-      where: {id: convertToType(genreID)}
+      where: {id: genreID}
     });
    return res.status(200).send(genre);
   } catch (error) {
@@ -43,7 +43,7 @@ export const updateGenreByID = async (req: Request, res: Response): Promise<Resp
     }
     const genreFound = await prismaClient.genres.update({
       where:{
-        id: convertToType(genreID)},
+        id: genreID},
         data:{ genre }      
     })
     
@@ -58,7 +58,7 @@ export const deleteGenreByID = async (req: Request, res: Response): Promise<Resp
   const { genreID } = req.params;
   try {
     const deleteGenre = await prismaClient.genres.delete({
-      where: {id: convertToType(genreID)}
+      where: {id: genreID}
     })
     
     // GenresModel.findByIdAndDelete(genreID);

@@ -30,15 +30,13 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.1.1
- * Query Engine version: 6a3747c37ff169c90047725a05a6ef02e32ac97e
+ * Prisma Client JS version: 5.3.1
+ * Query Engine version: 61e140623197a131c2a6189271ffee05a7aa9a59
  */
 Prisma.prismaVersion = {
-  client: "5.1.1",
-  engine: "6a3747c37ff169c90047725a05a6ef02e32ac97e"
+  client: "5.3.1",
+  engine: "61e140623197a131c2a6189271ffee05a7aa9a59"
 }
-
-false
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
 Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
@@ -178,14 +176,24 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../..",
-  "clientVersion": "5.1.1",
-  "engineVersion": "6a3747c37ff169c90047725a05a6ef02e32ac97e",
+  "clientVersion": "5.3.1",
+  "engineVersion": "61e140623197a131c2a6189271ffee05a7aa9a59",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "mongodb",
-  "dataProxy": false,
-  "postinstall": false
+  "postinstall": false,
+  "inlineDatasources": {
+    "db": {
+      "url": {
+        "fromEnvVar": "MONGO_CLUSTER_URI",
+        "value": null
+      }
+    }
+  },
+  "inlineSchema": "Z2VuZXJhdG9yIGNsaWVudCB7DQogIHByb3ZpZGVyID0gInByaXNtYS1jbGllbnQtanMiDQogIG91dHB1dCA9ICIuL2dlbmVyYXRlZC9tb25nb2RiX2NsaWVudCINCn0NCg0KZGF0YXNvdXJjZSBkYiB7DQogIHByb3ZpZGVyID0gIm1vbmdvZGIiDQogIHVybCAgICAgID0gZW52KCJNT05HT19DTFVTVEVSX1VSSSIpDQp9DQoNCm1vZGVsIFVzZXJzIHsNCiAgaWQgICAgICAgICAgU3RyaW5nICAgQGlkIEBkZWZhdWx0KGF1dG8oKSkgQG1hcCgiX2lkIikgQGRiLk9iamVjdElkDQogIG5hbWUgICAgICAgIFN0cmluZw0KICBlbWFpbCAgICAgICBTdHJpbmcgICBAdW5pcXVlDQogIG1vdmllcyAgICAgIE1vdmllc1tdDQogIG1vdmllc0FycmF5IFN0cmluZ1tdDQogIGNyZWF0ZWRBdCAgIERhdGVUaW1lIEBkZWZhdWx0KG5vdygpKQ0KICB1cGRhdGVkQXQgICBEYXRlVGltZSBAdXBkYXRlZEF0DQp9DQoNCm1vZGVsIE1vdmllcyB7DQogIGlkICAgICAgICAgIFN0cmluZyAgICBAaWQgQGRlZmF1bHQoYXV0bygpKSBAbWFwKCJfaWQiKSBAZGIuT2JqZWN0SWQNCiAgdGl0bGUgICAgICAgU3RyaW5nDQogIHNjb3JlICAgICAgIEludA0KICB5ZWFyICAgICAgICBJbnQNCiAgY291bnRyeSAgICAgU3RyaW5nDQogIGdlbnJlcyAgICAgIEdlbnJlc1tdDQogIGdlbnJlc0FycmF5IFN0cmluZ1tdDQogIGNyZWF0ZWRBdCAgIERhdGVUaW1lPyBAZGVmYXVsdChub3coKSkNCiAgdXBkYXRlZEF0ICAgRGF0ZVRpbWU/IEB1cGRhdGVkQXQNCiAgdXNlcnMgICAgICAgVXNlcnM/ICAgIEByZWxhdGlvbihmaWVsZHM6IFt1c2Vyc0lkXSwgcmVmZXJlbmNlczogW2lkXSwgb25EZWxldGU6IENhc2NhZGUsIG9uVXBkYXRlOiBDYXNjYWRlKQ0KICB1c2Vyc0lkICAgICBTdHJpbmc/ICAgQGRiLk9iamVjdElkDQogIGltYWdlVXJsICAgIFN0cmluZz8NCiAgaW1hZ2VJZCAgICAgU3RyaW5nPw0KICBpc0xpa2VkICAgICBCb29sZWFuPw0KICBkZXNjcmlwdGlvbiBTdHJpbmc/DQp9DQoNCm1vZGVsIFB1YmxpY21vdmllcyB7DQogIGlkICAgICAgICAgIFN0cmluZyAgICBAaWQgQGRlZmF1bHQoYXV0bygpKSBAbWFwKCJfaWQiKSBAZGIuT2JqZWN0SWQNCiAgdGl0bGUgICAgICAgU3RyaW5nDQogIHNjb3JlICAgICAgIEludA0KICB5ZWFyICAgICAgICBJbnQNCiAgY291bnRyeSAgICAgU3RyaW5nDQogIGdlbnJlcyAgICAgIEdlbnJlc1tdDQogIGdlbnJlc0FycmF5IFN0cmluZ1tdDQogIGNyZWF0ZWRBdCAgIERhdGVUaW1lPyBAZGVmYXVsdChub3coKSkNCiAgdXBkYXRlZEF0ICAgRGF0ZVRpbWU/IEB1cGRhdGVkQXQNCiAgaW1hZ2VVcmwgICAgU3RyaW5nPw0KICBpbWFnZUlkICAgICBTdHJpbmc/IA0KfQ0KDQptb2RlbCBHZW5yZXMgew0KICBpZCAgICAgICAgICAgICBTdHJpbmcgICAgICAgIEBpZCBAZGVmYXVsdChhdXRvKCkpIEBtYXAoIl9pZCIpIEBkYi5PYmplY3RJZA0KICBnZW5yZSAgICAgICAgICBTdHJpbmcgICAgICAgIEB1bmlxdWUNCiAgY3JlYXRlZEF0ICAgICAgRGF0ZVRpbWUgICAgICBAZGVmYXVsdChub3coKSkNCiAgdXBkYXRlZEF0ICAgICAgRGF0ZVRpbWUgICAgICBAdXBkYXRlZEF0DQogIG1vdmllcyAgICAgICAgIE1vdmllcz8gICAgICAgQHJlbGF0aW9uKGZpZWxkczogW21vdmllc0lkXSwgcmVmZXJlbmNlczogW2lkXSkNCiAgbW92aWVzSWQgICAgICAgU3RyaW5nPyAgICAgICBAZGIuT2JqZWN0SWQNCiAgUHVibGljbW92aWVzICAgUHVibGljbW92aWVzPyBAcmVsYXRpb24oZmllbGRzOiBbcHVibGljbW92aWVzSWRdLCByZWZlcmVuY2VzOiBbaWRdKQ0KICBwdWJsaWNtb3ZpZXNJZCBTdHJpbmc/ICAgICAgIEBkYi5PYmplY3RJZA0KfQ0KDQoNCg==",
+  "inlineSchemaHash": "956d6c73c6245487752dcb557324960b2eebd273e72145bd2de540087a2d2613",
+  "noEngine": false
 }
 
 const fs = require('fs')
@@ -210,8 +218,6 @@ defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 
 
 
-
-
 const { warnEnvConflicts } = require('./runtime/library')
 
 warnEnvConflicts({
@@ -223,7 +229,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "prisma/generated/mongodb_client/query_engine-windows.dll.node")
+// file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/generated/mongodb_client/schema.prisma")

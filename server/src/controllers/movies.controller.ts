@@ -86,7 +86,7 @@ export const getMovieByID = async (req: Request, res: Response): Promise<Respons
   const { movieID } = req.params;
   try {
     const movie = await prismaClient.movies.findUnique({
-      where: { id: convertToType(movieID) },
+      where: { id:movieID },
       include: { genres: true },
     });
 
@@ -115,19 +115,20 @@ export const getAllMovies = async (req: Request, res: Response): Promise<Respons
   }
 };
 export const getAllMoviesByUser = async (req: Request, res: Response): Promise<Response> => {
-  const {userEmail} = req.params
+  const { userEmail } = req.params;
+
   try {
-    const movies = await prismaClient.movies.findMany({
-      
-      include: {
-        genres: true,
-      },
-      users: {
-        connect: {
+    const movies = await prismaClient.users
+      .findUnique({
+        where: {
           email: userEmail,
         }
-      }
-    });
+      })
+      .movies({
+        include: {
+          genres: true,
+        },
+      });
 
     return res.status(200).send(movies);
   } catch (error) {
@@ -173,7 +174,7 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
       imageUrl = upload.secure_url;
     }
 
-    const movie = await prismaClient.movies.findUnique({ where: { id: convertToType(movieID) }, include: { genres: true } });
+    const movie = await prismaClient.movies.findUnique({ where: { id: movieID }, include: { genres: true } });
 
     if (!movie) {
       return res.status(404).json({ error: "Movie not found" });
@@ -202,7 +203,7 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
       year,
       country,
       description,
-      genres: { connect: genreIDs.map((genreID: string) => ({ id: convertToType(genreID) })) },
+      genres: { connect: genreIDs.map((genreID: string) => ({ id: genreID })) },
     };
 
     if (imageUrl) {
@@ -210,7 +211,7 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
     }
 
     const movieUpdate = await prismaClient.movies.update({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
       data: movieUpdateData,
       include: {
         genres: true,
@@ -222,7 +223,7 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
 
     // Apdate genresArray
     await prismaClient.movies.update({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
       data: {
         genresArray: updatedGenresArray,
       },
@@ -241,7 +242,7 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
   try {
     //Find Movie by id
     const movie = await prismaClient.movies.findUnique({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
       include: {
         users: true,
       },
@@ -249,7 +250,8 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
 
     if (!movie) {
       return res.status(404).send({ status: "Error", msg: "Movie not found" });
-    } else {
+    } 
+    if (movie.imageId) {
       await deleteImage(movie.imageId);
     }
 
@@ -258,7 +260,7 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
     if (userID) {
       // Remove the movie's title from the user's moviesArray
       await prismaClient.users.update({
-        where: { id: convertToType(userID) },
+        where: { id: userID },
         data: {
           moviesArray: { set: movie.users?.moviesArray.filter((title: string) => title !== movie.title) },
         },
@@ -267,7 +269,7 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
 
     // Delete the movie
     await prismaClient.movies.delete({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
     });
 
     return res.status(200).send({ status: "Success", msg: "Deleted movie by ID" });
@@ -284,7 +286,7 @@ export const updateMovieLikedStatus = async (req: Request, res: Response): Promi
   try {
     // update liked state
     await prismaClient.movies.update({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
       data: {
         isLiked,
       },

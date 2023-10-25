@@ -66,7 +66,7 @@ export const getPublicMovieByID = async (req: Request, res: Response): Promise<R
   const { movieID } = req.params;
   try {
     const movie = await prismaClient.publicmovies.findUnique({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
       include: { genres: true },
     });
 
@@ -132,7 +132,7 @@ export const updatePublicMovieByID = async (req: Request, res: Response): Promis
       imageUrl = upload.secure_url;
     }
 
-    const movie = await prismaClient.publicmovies.findUnique({ where: { id: convertToType(movieID) }, include: { genres: true } });
+    const movie = await prismaClient.publicmovies.findUnique({ where: { id: movieID }, include: { genres: true } });
 
     if (!movie) {
       return res.status(404).json({ error: "Movie not found" });
@@ -170,7 +170,7 @@ export const updatePublicMovieByID = async (req: Request, res: Response): Promis
     }
 
     const movieUpdate = await prismaClient.publicmovies.update({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
       data: movieUpdateData,
       include: {
         genres: true,
@@ -182,7 +182,7 @@ export const updatePublicMovieByID = async (req: Request, res: Response): Promis
 
     // Apdate genresArray
     await prismaClient.publicmovies.update({
-      where: { id:  convertToType(movieID)  },
+      where: { id:  movieID  },
       data: {
         genresArray: updatedGenresArray,
       },
@@ -200,7 +200,7 @@ export const deletePublicMovieByID = async (req: Request, res: Response): Promis
 
   try {
     const movie = await prismaClient.publicmovies.findUnique({
-      where: { id: convertToType(movieID) }
+      where: { id: movieID }
     });
 
     if (!movie) {
@@ -209,7 +209,7 @@ export const deletePublicMovieByID = async (req: Request, res: Response): Promis
 
     // Delete the movie
     await prismaClient.publicmovies.delete({
-      where: { id: convertToType(movieID) },
+      where: { id: movieID },
     });
 
     return res.status(200).send({ status: "Success", msg: "Deleted movie by ID" });

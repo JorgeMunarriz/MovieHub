@@ -90,7 +90,7 @@ export const updateUserByID = async (req: Request, res: Response): Promise<Respo
   const { name, email } = req.body;
   try {
     const userById = await prismaClient.users.update({
-      where: { id: convertToType(userID) },
+      where: { id: userID },
       data: { name, email },
     });
 
@@ -104,7 +104,7 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
   const { userID } = req.params;
   try {
     const user = await prismaClient.users.findUnique({
-      where: { id: convertToType(userID) },
+      where: { id: userID },
       include: {
         movies: {
           include: {
@@ -132,13 +132,13 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
 
       // Delete the movie
       await prismaClient.movies.delete({
-        where: { id: convertToType(movie.id) },
+        where: { id: movie.id },
       });
     }
 
     // Delete the user
     await prismaClient.users.delete({
-      where: { id:convertToType(userID) },
+      where: { id: userID },
     });
 
     return res.status(200).json({ status: "Success", msg: "Delete User" });

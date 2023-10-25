@@ -220,8 +220,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 5.1.1
-   * Query Engine version: 6a3747c37ff169c90047725a05a6ef02e32ac97e
+   * Prisma Client JS version: 5.3.1
+   * Query Engine version: 61e140623197a131c2a6189271ffee05a7aa9a59
    */
   export type PrismaVersion = {
     client: string
@@ -974,6 +974,11 @@ export namespace Prisma {
      * Overwrites the datasource url from your schema.prisma file
      */
     datasources?: Datasources
+
+    /**
+     * Overwrites the datasource url from your schema.prisma file
+     */
+    datasourceUrl?: string
 
     /**
      * @default "colorless"
@@ -7478,6 +7483,18 @@ export namespace Prisma {
   /**
    * Aliases for legacy arg types
    */
+    /**
+     * @deprecated Use UsersCountOutputTypeDefaultArgs instead
+     */
+    export type UsersCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = UsersCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MoviesCountOutputTypeDefaultArgs instead
+     */
+    export type MoviesCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = MoviesCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PublicmoviesCountOutputTypeDefaultArgs instead
+     */
+    export type PublicmoviesCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = PublicmoviesCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use UsersDefaultArgs instead
      */

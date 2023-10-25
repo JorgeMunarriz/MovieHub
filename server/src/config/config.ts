@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import { getEnvVar } from '../utils/getEnvVar';
 import { APP_ORIGIN, AUTH0_AUDIENCE, AUTH0_ISSUER } from "./authReferences";
-import { CLOUDINARY_API_KEY, CLOUDINARY_NAME, CLOUDINARY_API_SECRET } from "../utils/cloudinaryReferences";
 
 dotenv.config();
 
