@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import  { prismaClient } from "../db/prismaClient";
-import { convertToType } from '../utils/convertToType';
- "../db/prismaClient";
+import { prismaClient } from "../db/prismaClient";
+// import { convertToType } from "../utils/convertToType";
+
 
 export const createUser = async (req: Request, res: Response): Promise<Response> => {
   const { name, email, moviesArray } = req.body;
@@ -9,14 +9,14 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
   try {
     if (!name || !email) {
       return res.status(400).json({ error: "Missing required fields" });
-    }    
+    }
     // Check if a user with the given email already exists
     const existingUser = await prismaClient.users.findUnique({
       where: { email },
     });
 
     if (existingUser) {
-      return res.status(200).json("User with this email already exists" );
+      return res.status(200).json("User with this email already exists");
     }
     const newUser = await prismaClient.users.create({
       data: { name, email, moviesArray },
@@ -149,7 +149,7 @@ export const deleteUserByID = async (req: Request, res: Response): Promise<Respo
 
 export const deleteUsers = async (req: Request, res: Response): Promise<Response> => {
   const { email } = req.params;
-  
+
   try {
     // Find the user by their email
     const user = await prismaClient.users.findUnique({
@@ -164,10 +164,9 @@ export const deleteUsers = async (req: Request, res: Response): Promise<Response
     await prismaClient.users.delete({
       where: { id: email }, // Convert the id to an ObjectID
     });
-  
+
     return res.status(200).json({ status: "Success", msg: "Delete User" });
   } catch (error) {
     return res.status(500).json(error);
   }
 };
-

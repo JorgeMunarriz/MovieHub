@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { uploadImage } from "../utils/cloudinary";
 import fs from "fs-extra";
 import { prismaClient } from "../db/prismaClient";
-import { convertToType } from '../utils/convertToType';
+// import { convertToType } from '../utils/convertToType';
 
 
 export const createPublicMovie = async (req: Request, res: Response): Promise<Response> => {
@@ -162,7 +162,7 @@ export const updatePublicMovieByID = async (req: Request, res: Response): Promis
       score,
       year,
       country,
-      genres: { connect: genreIDs.map((genreID: string) => ({ id: convertToType(genreID) })) },
+      genres: { connect: genreIDs.map((genreID: string) => ({ id: genreID })) },
     };
 
     if (imageUrl) {

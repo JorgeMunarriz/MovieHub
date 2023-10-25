@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {prismaClient} from "../db/prismaClient";
-import { convertToType } from '../utils/convertToType';
+// import { convertToType } from '../utils/convertToType';
 
 export const createGenre = async (req: Request, res: Response): Promise<Response> => {
   const {  genre } = req.body;

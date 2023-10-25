@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { prismaClient } from "../db/prismaClient";
 import { uploadImage, deleteImage } from "../utils/cloudinary";
 import fs from "fs-extra";
-import { convertToType } from "../utils/convertToType";
+// import { convertToType } from "../utils/convertToType";
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
   let { title, year, score, country, genres, description } = req.body;
