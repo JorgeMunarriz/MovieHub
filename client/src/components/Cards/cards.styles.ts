@@ -13,9 +13,9 @@ export const CardsStyles = styled.div`
   box-shadow: 10px 10px 8px 0px rgba(0,0,0,0.75);
   margin-bottom: 4rem;
   transition: all 0.3s ease-in-out;
-  &:hover{
+  /* &:hover{
     transform: scale(1.05);
-  }
+  } */
   
   .card__header {
     display: flex;

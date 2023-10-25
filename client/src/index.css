@@ -168,3 +168,7 @@ h6 {
     background-color: var(--background-light-hover);
   }
 }
+
+.dark .movieDetails__footer_containerDescription_text {
+  color: var(--text-light) !important;
+}

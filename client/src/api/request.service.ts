@@ -16,6 +16,7 @@ export const createMovie = async (url: string, data: MovieFormData, getToken: Ge
   if (data.image) {
     formData.append("image", data.image[0]);
   }
+  console.log(formData)
 
   try {
     const response = await fetch(url, {
@@ -50,7 +51,7 @@ export const updateMovie = async (url: string, data: MovieFormData, getToken: Ge
   if (data.image) {
     formData.append("image", data.image[0]);
   }
-  console.log(formData)
+ 
 
   try {
     const response = await fetch(url, {

@@ -119,9 +119,32 @@ export const MoviesPageDetailStyles = styled.div`
     }
     &__footer {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: space-around;
       padding: 1vw;
+      &_containerButtons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding: 1vw;
+      }
+      &_containerDescription {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding: 1vw;
+        overflow-y: auto;
+        &_text {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          font-size: 16px;
+          color: var(--text-dark);
+        }
+      }
     }
   }
   @media (width < 768px) {

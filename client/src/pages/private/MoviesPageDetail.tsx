@@ -76,8 +76,13 @@ export const MoviesPageDetail = () => {
           </div>
           {isAuthenticated && (
             <div className="movieDetails__footer">
+              <div className="movieDetails__footer_containerButtons">
               <ModalDeleteMovie key={movieData.id} {...movieData} />
               <ModalUpdateMovie {...movieData} />
+              </div>
+              <div className="movieDetails__footer_containerDescription">
+                <p className="movieDetails__footer_containerDescription_text">Movie's description: {movieData.description}</p>
+              </div>
             </div>
           )}
         </div>
