@@ -2,16 +2,15 @@ import { useState} from "react";
 import { ModalButton, ModalContainer, ModalContent, ModalStyles } from "./modal.styles";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useForm } from "react-hook-form";
-
 import { VITE_URL_MOVIES } from "../../global/serverUrl";
 import { createMovie } from "../../api";
-import { useMovieContext } from "../../hooks/useContextHook";
 import { BsPlusCircle } from "react-icons/bs";
+import toast from "react-hot-toast";
 
 
 export const Modal = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { fetchMovies } = useMovieContext();
+  
   
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
   const { register, handleSubmit } = useForm();
@@ -29,12 +28,20 @@ export const Modal = () => {
         genres: data.genres.split(",").map((genre:string) => genre.trim()),
       };
       const url = `${VITE_URL_MOVIES}/${user?.email}`;
-      createMovie(url, movieData, getAccessTokenSilently);
+      // createMovie(url, movieData, getAccessTokenSilently);
+      // toast.success('Successfully created!');
+      const myPromise = createMovie(url, movieData, getAccessTokenSilently);
+      toast.promise(myPromise, {
+        loading: 'Loading',
+        success: 'Got the data',
+        error: 'Error when fetching',
+      });
+
       setIsOpen(!modalIsOpen);
     } else {
-      console.error("The data does not have the correct structure.");
+      toast.error("The data does not have the correct structure.");
     }
-    fetchMovies()
+
   });
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -50,13 +57,13 @@ export const Modal = () => {
       {isAuthenticated && (
         <button className="modal__btn-open" onClick={toggleModal}>
           <BsPlusCircle/>
-          Add{" "}
+          Add
         </button>
       )}
 
       {modalIsOpen && (
         <ModalContainer>
-          <ModalContent>
+          <ModalContent>            
             <h2>Add Movie</h2>
             <form className="form__modal" onSubmit={onsubmit}>
               <div className="form__modal-div">
@@ -88,6 +95,17 @@ export const Modal = () => {
                   Movie's Genres
                 </label>
                 <input className="form__modal-div-input" type="text" id="formModalGenre" placeholder="Action, Adventure..." {...register("genres")} />
+              </div>
+              <div className="form__modal-div">
+                <label className="form__modal-div-label" htmlFor="formModalDescription">
+                  Movie's Description
+                </label>
+                <textarea
+                  className="form__modal-div-textarea"
+                  
+                  id="formModalDescription"  placeholder="This is a description"
+                  {...register("description")}                 
+                />
               </div>
               <div className="form__modal-div-img">
                 {selectedFile && <img className="form__modal-div-img-imgPreview" src={URL.createObjectURL(selectedFile)} alt="Preview" />}

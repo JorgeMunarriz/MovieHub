@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CardsStyles = styled.div`
+export const CardsStyles = styled.article`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,9 +13,10 @@ export const CardsStyles = styled.div`
   box-shadow: 10px 10px 8px 0px rgba(0,0,0,0.75);
   margin-bottom: 4rem;
   transition: all 0.3s ease-in-out;
-  /* &:hover{
+   &:hover{
+    
     transform: scale(1.05);
-  } */
+  }
   
   .card__header {
     display: flex;
@@ -30,6 +31,7 @@ export const CardsStyles = styled.div`
       display: block;
       position: relative;
       width: 100%;
+      height: 100%;
       object-fit: cover;
     }
     &-divHeart {
@@ -166,7 +168,7 @@ export const CardsStyles = styled.div`
         gap: 0.5rem;
         padding: 8px 16px;
         background-color: rgba(230, 55, 55, 0.6);
-        color: #fff;
+        color: var(--text-dark);
         border: none;
         border-radius: 20px;
         cursor: pointer;

@@ -15,6 +15,7 @@ export const ModalDeleteMovie = ({ id }: MoviesType) => {
 
   const handleDelete = async () => {
     await deleteMovie(url, getAccessTokenSilently);
+    
     fetchMovies();
     setIsOpen(false);
   };
@@ -37,14 +38,14 @@ export const ModalDeleteMovie = ({ id }: MoviesType) => {
     <ModalDeleteMovieStyles>
       {isAuthenticated && (
         <button className="modal__btn-open" onClick={toggleModal}>
-          Delete
+          Delete Movie
         </button>
       )}
 
       {modalIsOpen && (
         <ModalDeleteContainer>
           <ModalDeleteContent>
-            <h2 className="modalDelete__title">Are you sure to delete Movie</h2>
+            <h2 className="modalDelete__title">Are you sure to delete Movie?</h2>
             <ModalDeleteButton onClick={handleDelete}>Delete</ModalDeleteButton>
 
             <ModalCloseButton onClick={toggleModal}>Close Modal</ModalCloseButton>

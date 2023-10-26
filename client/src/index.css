@@ -59,15 +59,18 @@ h6 {
   isolation: isolate;
   height: 100vh;
 }
-:root{
+:root {
   background-color: var(--background-light);
   --background-dark: rgb(53, 53, 53);
   --background-dark-hover: rgb(37, 37, 37);
   --background-light: rgba(214, 212, 212, 0.815);
   --background-light-hover: rgba(179, 178, 178, 0.815);
+  --background-light-max: rgba(214, 212, 212, 1);
   --text-dark: rgba(7, 7, 7, 0.808);
+  --text-darkest: rgba(7, 7, 7, 1);
   --text-light: rgb(197, 196, 196);
-  --title-h1-light:rgba(255, 255, 255, 0.8);
+  --text-white: rgb(243, 243, 243);
+  --title-h1-light: rgba(255, 255, 255, 0.8);
   --title-h2-light: rgba(46, 45, 45, 0.8);
   --title-h3-light: rgba(255, 255, 255, 0.8);
   --title-h4-light: rgba(255, 255, 255, 0.8);
@@ -82,8 +85,10 @@ h6 {
   --background-red: rgba(230, 55, 55, 0.6);
   --background-red-hover: rgba(230, 55, 55, 0.9);
   --background-red-hover-dark: rgb(253, 3, 3);
-
-
+  --background-blue: rgba(0, 123, 250, 0.8);
+  --background-blue-hover: rgba(0, 123, 250, 1);
+  --background-blue-dark: rgba(54, 150, 247, 0.6);
+  --background-blue-hover-dark: rgba(54, 150, 247, 1);
 }
 
 ::-webkit-scrollbar {
@@ -109,17 +114,17 @@ h6 {
   /* background: radial-gradient(circle, rgba(167, 167, 167, 0.903) 0%, rgba(119, 119, 119, 0.635) 76%, rgba(54, 54, 54, 0.594) 89%);  */
   background-color: var(--background-light);
 }
-.light .profileDiv__h2, .light .profileDiv__paragraph {
+.light .profileDiv__h2,
+.light .profileDiv__paragraph {
   color: var(--title-h2-light) !important;
 }
-.light .movieDetails__main-titleMovie, 
+.light .movieDetails__main-titleMovie,
 .light .movieDetails__main-country,
 .light .movieDetails__main-scoreMovie,
-.light .movieDetails__main-div-genreTitle, .light .movieDetails__main-div-ul-genresList ,
+.light .movieDetails__main-div-genreTitle,
+.light .movieDetails__main-div-ul-genresList,
 .light .movieDetails__main-titleMovie {
   color: rgba(19, 18, 18, 0.9) !important;
-
-
 }
 
 .light footer {
@@ -150,20 +155,30 @@ h6 {
   transition: all 0.5s ease-in-out;
   color: rgba(211, 211, 211, 0.8) !important;
 }
+.dark article {
+  background-color: rgba(48, 47, 47, 0.7) !important;
+  & .modal__btn-open {
+    color: var(--text-white)!important;
+  }
+
+}
 .dark .card__main {
   transition: all 0.5s ease-in-out;
   color: rgba(247, 245, 245, 0.8);
-  background-color: rgba(48, 47, 47, 0.7);
-  .card__footer-detailsLink{
+  background-color: rgba(48, 47, 47, 0.7) !important;
+  .card__main-div-genreMovie{
+    color: rgba(247, 245, 245, 0.8);
+  }
+  .card__footer-detailsLink {
     background-color: rgba(218, 216, 216, 0.7);
-    &:hover{
+    &:hover {
       background-color: rgba(218, 216, 216, 0.9);
-
     }
   }
 }
 .dark #goUpButton {
   background-color: var(--background-light);
+  color: var(--text-darkest);
   &:hover {
     background-color: var(--background-light-hover);
   }
@@ -171,4 +186,24 @@ h6 {
 
 .dark .movieDetails__footer_containerDescription_text {
   color: var(--text-light) !important;
+}
+
+.dark section {
+  transition: all 0.5s ease-in-out;
+  background-color: var(--background-dark) !important;
+  & .form__modal-btnUpdateMovie {
+    transition: all 0.5s ease-in-out;
+    background-color: var(--background-blue-dark) !important;
+    &:hover {
+      background-color: var(--background-blue-hover-dark) !important;
+    }
+  }
+  & button {
+    
+    background-color: var(--background-light) !important;
+    &:hover {
+      background-color: var(--background-light-hover) !important;
+      color: var(--text-dark);
+    }
+  }
 }

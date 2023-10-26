@@ -7,7 +7,7 @@ import { VITE_URL_MOVIES } from "../global/serverUrl";
 // Interface's context
 export interface MovieContextState {
   moviesData: MoviesType[];
-  fetchMovies: () => void;
+  fetchMovies: () => Promise<unknown>;
   likedMovies: { [movieId: string]: boolean };
   toggleLikedStatus: (movieId: string) => void;
 }

@@ -41,7 +41,7 @@ export const MoviesPageDetailStyles = styled.div`
           width: 50px;
           border-radius: 50%;
           border: none;
-          padding: 16px;
+          padding: 10px;
           &::before{
             content: "";
             position: absolute;
@@ -57,11 +57,11 @@ export const MoviesPageDetailStyles = styled.div`
             animation: glowing 20s linear infinite;
           }
           svg {
-            width: 80%;
-            height: 80%;
+            
             z-index: 1;
             path {
-              width: 80%;
+              /* width: 100%;
+              height: 100%; */
               color: rgba(210, 55, 55, 0.7);
               
               z-index: 1;

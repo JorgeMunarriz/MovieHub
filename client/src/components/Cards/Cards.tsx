@@ -6,6 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { ModalDeleteMovie, ModalUpdateMovie } from "..";
 import { MoviesType } from "../../types/moviehub.types";
 import { useMovieContext } from "../../hooks/useContextHook";
+import { SpinnerDotted } from "spinners-react";
 
 const Cards = ({ ...props }: MoviesType) => {
   const {  isAuthenticated } = useAuth0();
@@ -22,15 +23,22 @@ const Cards = ({ ...props }: MoviesType) => {
     <CardsStyles>
       
       <div className="card__header">
-        <img className="card__header-img" src={props.imageUrl} alt={props.title} />
+        {
+          props.imageUrl ?
+          <img className="card__header-img" src={props.imageUrl} alt={props.title} />
+          : <SpinnerDotted size={65} thickness={113} speed={148} color="rgba(172, 83, 57, 1)" />
+
+        }
         {isAuthenticated && <div className="card__header-divHeart">
         {isLikedMovie ? (
-                <button className="card__header-divHeart-button" onClick={handleLiked}>
+                <button className="card__header-divHeart-button" aria-label="Toggle Like Movie" onClick={handleLiked}>
                   <BsHeartFill />
+                  {/* <span className="card__header-divHeart-button">Click to dislike</span> */}
                 </button>
               ) : (
                 <button className="card__header-divHeart-button" onClick={handleLiked}>
                   <BsHeart />
+                  {/* <span className="card__header-divHeart-button">Click to like</span> */}
                 </button>
               )}
         </div>}

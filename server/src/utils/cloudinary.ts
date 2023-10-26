@@ -10,10 +10,9 @@ cloudinary.config({
 })
 
 
-export async function uploadImage(filePath: string){
-    return await cloudinary.uploader.upload(filePath, {
-        folder: 'moviehub'
-    })
+export async function uploadImage(imageData: string){
+    const upload = await cloudinary.uploader.upload(imageData, {folder: "uploads"})
+    return upload;
 }
 export const deleteImage = async (imageId:string) => {
 

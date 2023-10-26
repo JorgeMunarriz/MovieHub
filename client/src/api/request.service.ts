@@ -1,4 +1,6 @@
+import toast from "react-hot-toast";
 import { GetTokenFunction, MovieFormData, MoviesType } from "../types/moviehub.types";
+import { readData } from "../utils/readData";
 
 export const createMovie = async (url: string, data: MovieFormData, getToken: GetTokenFunction) => {
   const token = await getToken();
@@ -14,10 +16,11 @@ export const createMovie = async (url: string, data: MovieFormData, getToken: Ge
   }
 
   if (data.image) {
-    formData.append("image", data.image[0]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const imageData: any = await readData(data.image[0]);
+    formData.append("image", imageData);
   }
-  console.log(formData)
-
+  
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -26,7 +29,11 @@ export const createMovie = async (url: string, data: MovieFormData, getToken: Ge
       },
       body: formData,
     });
-    
+   
+
+    if (response.ok) {
+      toast.success('Successfully created!');
+    }
     if (!response.ok) {
       throw new Error("No response from the server");
     }
@@ -49,9 +56,10 @@ export const updateMovie = async (url: string, data: MovieFormData, getToken: Ge
     }
   }
   if (data.image) {
-    formData.append("image", data.image[0]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const imageData: any = await readData(data.image[0]);
+    formData.append("image", imageData);
   }
- 
 
   try {
     const response = await fetch(url, {
@@ -61,7 +69,11 @@ export const updateMovie = async (url: string, data: MovieFormData, getToken: Ge
       },
       body: formData,
     });
+    if (response.ok) {
+      toast.success('Successfully updated!');
+    }
     if (!response.ok) {
+      toast.error('No response from the server');
       throw new Error("No response from the server");
     }
   } catch (error) {
@@ -79,7 +91,11 @@ export const deleteMovie = async (url: string, getToken: GetTokenFunction) => {
         authorization: `Bearer ${token}`,
       },
     });
+    if (response.ok) {
+      toast.success('Successfully deleted!');
+    }
     if (!response.ok) {
+      toast.error('No response from the server');
       throw new Error("No response from the server");
     }
   } catch (error) {
@@ -100,16 +116,13 @@ export const getMovieById = async (url: string, getToken: GetTokenFunction) => {
       throw new Error("No response from the server");
     }
 
-    const movie = await response.json() as MoviesType;
+    const movie = (await response.json()) as MoviesType;
     return movie;
   } catch (error) {
     console.log(error);
-    return null; 
+    return null;
   }
 };
-
-
-
 
 export const updateMovieLikedStatus = async (url: string, movieID: string, isLiked: boolean, getToken: GetTokenFunction) => {
   const token = await getToken();
@@ -123,14 +136,14 @@ export const updateMovieLikedStatus = async (url: string, movieID: string, isLik
       },
       body: JSON.stringify({ isLiked }), // Send Liked status
     });
-    
+
     if (response.ok) {
-      return true; 
+      return true;
     } else {
       throw new Error("No response from the server");
     }
   } catch (error) {
     console.log(error);
-    return false; 
+    return false;
   }
 };

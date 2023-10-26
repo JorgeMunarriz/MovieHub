@@ -34,6 +34,7 @@ export const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 100;
+
 `;
 
 export const ModalContent = styled.div`
@@ -77,6 +78,13 @@ export const ModalContent = styled.div`
         border-radius: 15px;
         padding: 5px;
       }
+      &-textarea {
+        font-size: 1rem;
+        color: rgba(50, 50, 50, 0.8);
+        border-radius: 15px;
+        padding: 5px;
+        min-width: 200px;
+      }
       &-img {
         display: flex;
         flex-direction: row-reverse;
@@ -99,6 +107,10 @@ export const ModalContent = styled.div`
       }
     }
   }
+  
+  @media (700px >= width ) {
+		width: 90%;
+	}
 `;
 
 export const ModalButton = styled.button`

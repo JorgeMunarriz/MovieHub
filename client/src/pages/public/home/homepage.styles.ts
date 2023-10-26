@@ -5,17 +5,19 @@ position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   overflow-y: scroll;
   
   .homePage {
     display: flex;
+    justify-content: flex-start;
     flex-direction: column;
     width: 100%;
     &__header {
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       text-align: center;
       &-title {
         font-size: 2rem;

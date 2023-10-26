@@ -18,15 +18,14 @@ const LazyCards: LazyExoticComponent<ComponentType<any>> = lazy(() => {
 });
 
 type ProprQuery = {
-  query: string;
+  queryTitle: string;
+  queryRating: string;
+  queryYear: string;
 };
 
-export const CardContainer = ({ query }: ProprQuery) => {
+export const CardContainer = ({ queryTitle, queryRating, queryYear }: ProprQuery) => {
   const { moviesData } = useMovieContext();
   const { isAuthenticated } = useAuth0();
-  
-
-  //   const [isLoading, setIsLoading] = useState(false)
 
   const [movies, setMovies] = useState<MoviesType[]>([]);
   useEffect(() => {
@@ -38,68 +37,48 @@ export const CardContainer = ({ query }: ProprQuery) => {
     fetchMovies();
   }, []);
 
+  const filteredMovies = (isAuthenticated ? moviesData : movies).filter(({ title, score, year }) => {
+    if (!queryTitle && !queryRating && !queryYear) return true;
+    const titleLowerCase = title.toLowerCase();
+    const scoreString = score.toString();
+    const yearString = year.toString();
+    const numericRating = parseFloat(queryRating);
+    const numericYear = parseInt(queryYear, 10);
+
+    return (
+      (!queryTitle || titleLowerCase.includes(queryTitle.toLowerCase())) &&
+      (!queryRating || (!isNaN(numericRating) && scoreString.includes(queryRating))) &&
+      (!queryYear || (!isNaN(numericYear) && yearString.includes(queryYear)))
+    );
+  });
+
   return (
-    <>
-      <CardContainerStyles>
-        {moviesData && isAuthenticated
-          ? moviesData
-              .filter(({ title }) => {
-                if (!query) return true;
-                if (query) {
-                  const titleLowerCase = title.toLowerCase();
-                  return titleLowerCase.includes(query.toLowerCase());
-                }
-              })
-              .map(({ id, title, score, year, country, genres, genresArray, createdAt, updatedAt, image, imageUrl, imageId, users }) => (
-                <Suspense key={id} fallback={<MyLoader />}>
-                  <LazyCards
-                    key={id}
-                    id={id}
-                    title={title}
-                    score={score}
-                    year={year}
-                    country={country}
-                    genres={genres}
-                    imageUrl={imageUrl}
-                    genresArray={genresArray}
-                    image={image}
-                    imageId={imageId}
-                    createdAt={createdAt}
-                    updatedAt={updatedAt}
-                    users={users}
-                  />
-                </Suspense>
-              ))
-          : movies
-              .filter(({ title }) => {
-                if (!query) return true;
-                if (query) {
-                  const titleLowerCase = title.toLowerCase();
-                  return titleLowerCase.includes(query.toLowerCase());
-                }
-              })
-              .map((movies) => (
-                <Suspense key={movies.id} fallback={<MyLoader />}>
-                  <LazyCards
-                    key={movies.id}
-                    id={movies.id}
-                    title={movies.title}
-                    score={movies.score}
-                    year={movies.year}
-                    country={movies.country}
-                    genres={movies.genres}
-                    imageUrl={movies.imageUrl}
-                    genresArray={movies.genresArray}
-                    image={movies.image}
-                    imageId={movies.imageId}
-                    createdAt={movies.createdAt}
-                    updatedAt={movies.updatedAt}
-                    users={movies.users}
-                  />
-                </Suspense>
-              ))}
-        <ButtonGoUp  />
-      </CardContainerStyles>
-    </>
+    <CardContainerStyles>
+      {filteredMovies.length > 0 ? (
+        filteredMovies.map(({ id, title, score, year, country, genres, genresArray, createdAt, updatedAt, image, imageUrl, imageId, users }) => (
+          <Suspense key={id} fallback={<MyLoader />}>
+            <LazyCards
+              key={id}
+              id={id}
+              title={title}
+              score={score}
+              year={year}
+              country={country}
+              genres={genres}
+              imageUrl={imageUrl}
+              genresArray={genresArray}
+              image={image}
+              imageId={imageId}
+              createdAt={createdAt}
+              updatedAt={updatedAt}
+              users={users}
+            />
+          </Suspense>
+        ))
+      ) : (
+        <h3 className="movieNotFound">The movie you are looking for has not been found, please search for another movie.</h3>
+      )}
+      <ButtonGoUp />
+    </CardContainerStyles>
   );
 };

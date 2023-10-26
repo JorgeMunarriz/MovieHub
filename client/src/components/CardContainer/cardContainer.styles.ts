@@ -7,7 +7,10 @@ flex-wrap: wrap;
 align-items: center;
 justify-content: center;
 gap: 20px;
-  
+  .movieNotFound{
+    font-size: 2rem;
+    font-weight: 300;
+  }
 `;
 
 

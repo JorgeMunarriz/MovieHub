@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import "../../index.css";
 
-export const SideBarStyles = styled.div`
+export const SideBarStyles = styled.section`
   position: sticky;
   top: 0px;
   z-index: 100;
@@ -9,8 +9,11 @@ export const SideBarStyles = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 10px auto;
-  background-color: var(--background-dark);
+  
+  background-color: var(--background-light-max);
+  transition: all 0.5s ease-in-out;
+
+
   .buttonOpenCloseSidebar {
     position: fixed;
     top: 125px;
@@ -61,13 +64,14 @@ export const SideBarStyles = styled.div`
     position: relative;
     margin-left: 20px;
     height: 0;
+    padding: 20px;
     &__header {
       display: flex;
       align-items: center;
       justify-content: center;
       &-title {
         font-size: 2rem;
-        color: var(--text-light);
+        color: var(--text-dark);
       }
     }
     &__main {
@@ -93,14 +97,14 @@ export const SideBarStyles = styled.div`
             gap: 0.5rem;
             min-width: 80px;
             height: 25px;
-            background-color: var(--background-light);
+            background-color: var(--background-dark);
             color: #fff;
             border: none;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
             &:hover {
-              background-color: var(--background-light-hover);
+              background-color: var(--background-dark-hover);
             }
           }
           &-div {
@@ -109,14 +113,16 @@ export const SideBarStyles = styled.div`
               background-color: var(--background-light);
               border: 1px solid rgba(255, 255, 255, 0.8);
               border-radius: 5px;
+              min-width: 200px;
+              padding: 5px;
             }
             &-buttonSearch {
               display: flex;
               align-items: center;
               justify-content: center;
-              width: 20px;
+              width: 30px;
               border: 1px solid rgba(255, 255, 255, 0.8);
-              border-radius: 10px;
+              border-radius: 50%;
             }
           }
         }
@@ -127,7 +133,7 @@ export const SideBarStyles = styled.div`
       opacity: 1;
       transform: scaleY(1);
       transition: all 0.5s ease-in-out;
-      height: 120px;
+      height: 130px;
       position: sticky;
       top: 10px;
     }

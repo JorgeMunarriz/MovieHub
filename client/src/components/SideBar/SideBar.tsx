@@ -7,21 +7,22 @@ interface QueryProps {
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
   handleChangeParams: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  query: string;
+  searchParamsRating: URLSearchParams;
+  setSearchParamsRating: SetURLSearchParams;
+  handleChangeParamsRating: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  searchParamsYear: URLSearchParams;
+  setSearchParamsYear: SetURLSearchParams;
+  handleChangeParamsYear: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  queryTitle: string;
+  queryRating: string;
+  queryYear: string;
 }
 
-export const SideBar = ({ handleChangeParams, query }: QueryProps) => {
+export const SideBar = ({ handleChangeParams, queryTitle, queryRating, queryYear, handleChangeParamsRating, handleChangeParamsYear }: QueryProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenSearchTitle, setIsOpenSearchTitle] = useState(false);
   const [isOpenSearchRating, setIsOpenSearchRating] = useState(false);
   const [isOpenSearchYear, setIsOpenSearchYear] = useState(false);
-
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const query = searchParams.get("q") || "";
-
-  // const handleChangeParams = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchParams({ q: target.value });
-  // };
 
   const toggleSideBar = () => {
     setIsOpen(!isOpen);
@@ -58,7 +59,7 @@ export const SideBar = ({ handleChangeParams, query }: QueryProps) => {
               {isOpenSearchTitle && (
                 <div className="sidebar__main-filters-list-div">
                   <label className="sidebar__main-filters-list-div-label" htmlFor="titleInput"></label>
-                  <input type="search" className="sidebar__main-filters-list-div-input" placeholder="Search" id="titleInput" value={query} onChange={handleChangeParams} />
+                  <input type="search" className="sidebar__main-filters-list-div-input" placeholder="Search" id="titleInput" value={queryTitle} onChange={handleChangeParams} />
                   <button className="sidebar__main-filters-list-div-buttonSearch">
                     <BsSearch />
                   </button>
@@ -72,7 +73,7 @@ export const SideBar = ({ handleChangeParams, query }: QueryProps) => {
               {isOpenSearchRating && (
                 <div className="sidebar__main-filters-list-div">
                   <label className="sidebar__main-filters-list-div-label" htmlFor="ratingInput"></label>
-                  <input type="search" className="sidebar__main-filters-list-div-input" placeholder="Search" id="ratingInput" value={query} onChange={handleChangeParams} />
+                  <input type="search" className="sidebar__main-filters-list-div-input" placeholder="Search" id="ratingInput" value={queryRating} onChange={handleChangeParamsRating} />
                   <button className="sidebar__main-filters-list-div-buttonSearch">
                     <BsSearch />
                   </button>
@@ -86,7 +87,7 @@ export const SideBar = ({ handleChangeParams, query }: QueryProps) => {
               {isOpenSearchYear && (
                 <div className="sidebar__main-filters-list-div">
                   <label className="sidebar__main-filters-list-div-label" htmlFor="yearInput"></label>
-                  <input type="search" className="sidebar__main-filters-list-div-input" placeholder="Search" id="yearInput" value={query} onChange={handleChangeParams} />
+                  <input type="search" className="sidebar__main-filters-list-div-input" placeholder="Search" id="yearInput" value={queryYear} onChange={handleChangeParamsYear} />
                   <button className="sidebar__main-filters-list-div-buttonSearch">
                     <BsSearch />
                   </button>

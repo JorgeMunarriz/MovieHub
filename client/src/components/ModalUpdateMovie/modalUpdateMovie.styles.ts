@@ -8,7 +8,9 @@ export const ModalUpdateMovieStyles = styled.div`
     gap: 0.5rem;
     padding: 8px 16px;
     background-color: rgba(230, 55, 55, 0.6);
-    color: #fff;
+    font-size: 1.2rem;
+    color: var(--text-darkest);
+    font-weight: 500;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -32,12 +34,12 @@ export const ModalUpdateContainer = styled.div`
   z-index: 1000;
 `;
 
-export const ModalUpdateContent = styled.div`
+export const ModalUpdateContent = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50vw;
-  background-color: #fff;
+  width: 60vw;
+  background-color: var(--background-light-max);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -56,14 +58,16 @@ export const ModalUpdateContent = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
-    width: 40vw;
+    width: 90%;
     &-div {
       display: flex;
       flex-direction: column;
+      width: 100%;
+      align-items: center;
       &-label {
         font-size: 1rem;
         color: rgba(50, 50, 50, 0.8);
-        &-uploadFile{
+        &-uploadFile {
           padding: 15px;
         }
       }
@@ -72,6 +76,18 @@ export const ModalUpdateContent = styled.div`
         color: rgba(50, 50, 50, 0.8);
         border-radius: 15px;
         padding: 5px;
+        width: 80%;
+
+      }
+      &-textarea {
+        font-size: 1rem;
+        color: rgba(50, 50, 50, 0.8);
+        border-radius: 15px 15px 0 15px;
+        padding: 15px;
+        width: 80%;
+        margin-bottom: 20px;
+        min-width: 200px;
+        min-height: 40px;
       }
       &-img {
         display: flex;
@@ -81,19 +97,25 @@ export const ModalUpdateContent = styled.div`
         }
       }
     }
-    &-btnAddMovie {
+    &-btnUpdateMovie {
       margin-top: 10px;
       width: 200px;
+      font-size: 1.5rem;
       padding: 8px 16px;
-      background-color: rgba(0, 123, 250, 0.8);
-      color: #fff;
+      background-color: var(--background-blue);
+      color: var(--text-white);
       border: none;
       border-radius: 20px;
       cursor: pointer;
-      &:hover{
-        
-      background-color: rgba(0, 123, 250, 0.6);
+      &:hover {
+        background-color: var(--background-blue-hover);
       }
+    }
+  }
+  @media (700px >= width) {
+    width: 90%;
+    .form__modal-div-img{
+      flex-direction: column-reverse;
     }
   }
 `;
@@ -102,13 +124,15 @@ export const ModalUpdateButton = styled.button`
   margin-top: 10px;
   padding: 8px 16px;
   width: 200px;
+  font-size: 1.5rem;
+
   background-color: rgba(50, 50, 50, 0.8);
-  color: #fff;
+  color: var(--text-white);
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  &:hover{
-        
-        background-color: rgba(50, 50, 50, 0.6);
-        }
+  transition: all 0.5s ease-in-out;
+  &:hover {
+    background-color: rgba(50, 50, 50, 0.6);
+  }
 `;

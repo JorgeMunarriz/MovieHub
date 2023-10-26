@@ -5,9 +5,10 @@ import fs from "fs-extra";
 // import { convertToType } from "../utils/convertToType";
 
 export const createMovie = async (req: Request, res: Response): Promise<Response> => {
-  let { title, year, score, country, genres, description } = req.body;
+  let { title, year, score, country, genres, description, image } = req.body;
 
   const { userID } = req.params;
+  
 
   if (typeof title !== "string") title = title.toString();
   if (typeof year !== "number") year = Number(year);
@@ -29,13 +30,13 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
       }
       genreIDs.push(genre.id);
     }
-    if (!req.files || !req.files.image) {
+    if (!image) {
       return res.status(400).json({ error: "Image is missing" });
     }
 
-    if ((req.files as any)?.image) {
-      const upload = await uploadImage((req.files as any).image.tempFilePath);
-      await fs.unlink((req.files as any).image.tempFilePath);
+    if (image) {
+      const upload = await uploadImage(image);
+      // await fs.unlink((req.files as any).image.tempFilePath);
 
       const newMovie = await prismaClient.movies.create({
         data: {
@@ -73,7 +74,7 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
 
       return res.status(201).send({ status: "Success", message: "Movie created", newMovie });
     }
-    console.log(res)
+    console.log(res);
 
     return res.status(404).send("File not found");
   } catch (error) {
@@ -86,7 +87,7 @@ export const getMovieByID = async (req: Request, res: Response): Promise<Respons
   const { movieID } = req.params;
   try {
     const movie = await prismaClient.movies.findUnique({
-      where: { id:movieID },
+      where: { id: movieID },
       include: { genres: true },
     });
 
@@ -122,7 +123,7 @@ export const getAllMoviesByUser = async (req: Request, res: Response): Promise<R
       .findUnique({
         where: {
           email: userEmail,
-        }
+        },
       })
       .movies({
         include: {
@@ -141,7 +142,7 @@ interface Genre {
 
 export const updateMovieByID = async (req: Request, res: Response): Promise<Response> => {
   const { movieID } = req.params;
-  let { title, score, year, country, genres, description } = req.body;
+  let { title, score, year, country, genres, description, image } = req.body;
 
   if (typeof title !== "string") title = title.toString();
   if (typeof year !== "number") year = Number(year);
@@ -165,13 +166,16 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
       genreIDs.push(genre.id);
     }
 
-    let imageUrl = "";
-    if (req.files && req.files.image) {
-      // Upload the new image
-      const upload = await uploadImage((req.files as any).image.tempFilePath);
-      await fs.unlink((req.files as any).image.tempFilePath);
 
+    let imageId;
+    let imageUrl;
+    
+    if (image){
+      const upload = await uploadImage(image);
+      // await fs.unlink((req.files as any).image.tempFilePath);
+      imageId = upload.public_id;
       imageUrl = upload.secure_url;
+      
     }
 
     const movie = await prismaClient.movies.findUnique({ where: { id: movieID }, include: { genres: true } });
@@ -204,11 +208,10 @@ export const updateMovieByID = async (req: Request, res: Response): Promise<Resp
       country,
       description,
       genres: { connect: genreIDs.map((genreID: string) => ({ id: genreID })) },
+      imageId: imageId,
+      imageUrl: imageUrl
     };
 
-    if (imageUrl) {
-      movieUpdateData.imageUrl = imageUrl;
-    }
 
     const movieUpdate = await prismaClient.movies.update({
       where: { id: movieID },
@@ -250,7 +253,7 @@ export const deleteMovieByID = async (req: Request, res: Response): Promise<Resp
 
     if (!movie) {
       return res.status(404).send({ status: "Error", msg: "Movie not found" });
-    } 
+    }
     if (movie.imageId) {
       await deleteImage(movie.imageId);
     }

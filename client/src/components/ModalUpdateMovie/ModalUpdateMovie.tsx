@@ -6,6 +6,7 @@ import { getMovieById, updateMovie } from "../../api";
 import { VITE_URL_MOVIES } from "../../global/serverUrl";
 import { MoviesType } from "../../types/moviehub.types";
 import { useMovieContext } from "../../hooks/useContextHook";
+import toast from "react-hot-toast";
 
 export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray, image, genres, description }: MoviesType) => {
   const { fetchMovies } = useMovieContext();
@@ -35,7 +36,7 @@ export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray,
           });
           setImagePreview(movie.imageUrl);
         } else {
-          console.log("Movie not found");
+          toast.error("Movie doesn't exist.");
         }
         return movie;
       });
@@ -60,7 +61,7 @@ export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray,
       ...data,
       genres: data.genres.split(",").map((genre: string) => genre.trim()),
     };
-    console.log(updatedData);
+    
     updateMovie(url, updatedData, getAccessTokenSilently);
     setIsOpen(!modalIsOpen);
     fetchMovies();
@@ -70,7 +71,7 @@ export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray,
     <ModalUpdateMovieStyles>
       {isAuthenticated && (
         <button className="modal__btn-open" onClick={toggleModal}>
-          Update
+          Update movie
         </button>
       )}
 
@@ -148,12 +149,11 @@ export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray,
                 <label className="form__modal-div-label" htmlFor="formModalDescription">
                   Movie's Description
                 </label>
-                <input
-                  className="form__modal-div-input"
-                  type="text"
+                <textarea
+                  className="form__modal-div-textarea"
                   id="formModalDescription"
                   {...register("description")}
-                  value={movieData.description}
+                  value={movieData.description ?? ''}
                   onChange={(e) => setMovieData({ ...movieData, description: e.target.value })}
                 />
               </div>
@@ -168,7 +168,7 @@ export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray,
                 </label>
                 <input className="form__modal-div-input" type="file" id="formModalFile" {...register("image")} onChange={handleFileChange} />
               </div>
-              <button className="form__modal-btnAddMovie" type="submit">
+              <button className="form__modal-btnUpdateMovie" type="submit">
                 Update Movie
               </button>
             </form>

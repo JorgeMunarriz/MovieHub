@@ -13,7 +13,7 @@ app
   .use(cors())
   .use(morgan("dev"))
   .use(helmet())
-  .use(express.json())
+  .use(express.json({ limit: "50mb" }))
   .use(
     fileUpload({
       useTempFiles: true,
@@ -29,3 +29,5 @@ app
   })
   .use(errorHandler);
 export default app;
+
+
