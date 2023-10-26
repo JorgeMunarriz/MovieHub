@@ -108,6 +108,10 @@ h6 {
 
   background-color: var(--background-light);
 } */
+
+.modal-content{
+  transform: none !important;
+}
 .light {
   transition: all 0.5s ease-in-out;
 
@@ -198,12 +202,20 @@ h6 {
       background-color: var(--background-blue-hover-dark) !important;
     }
   }
-  & button {
+  &.modalDelete__btnDelete {
     
-    background-color: var(--background-light) !important;
+    background-color: var(--background-red) !important;
     &:hover {
       background-color: var(--background-light-hover) !important;
       color: var(--text-dark);
+    }
+  }
+  & .modal__btnClose {
+    
+    background-color: var(--background-light) !important;
+    color: var(--text-dark);
+    &:hover {
+      background-color: var(--background-light-hover) !important;
     }
   }
 }

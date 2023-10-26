@@ -31,8 +31,9 @@ export const ModalDeleteContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
-`;
+  z-index: 1000;
+  transform: none !important;
+  `;
 
 export const ModalDeleteContent = styled.section`
   display: flex;
@@ -44,7 +45,8 @@ export const ModalDeleteContent = styled.section`
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
+  transform: none !important;
+  
   .modalDelete__title {
     font-size: 2.5rem;
   }

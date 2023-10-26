@@ -7,10 +7,21 @@ import { ModalDeleteMovie, ModalUpdateMovie } from "..";
 import { MoviesType } from "../../types/moviehub.types";
 import { useMovieContext } from "../../hooks/useContextHook";
 import { SpinnerDotted } from "spinners-react";
+import { useState } from "react";
 
 const Cards = ({ ...props }: MoviesType) => {
   const {  isAuthenticated } = useAuth0();
   const {  toggleLikedStatus, likedMovies } = useMovieContext();
+  const [isHovered, setIsHovered] = useState(false);
+
+// Manejar eventos de hover
+const handleMouseEnter = () => {
+  setIsHovered(true);
+};
+
+const handleMouseLeave = () => {
+  setIsHovered(false);
+};
 
   const isLikedMovie = likedMovies[props.id] || false
   likedMovies[props.id]
@@ -20,7 +31,9 @@ const Cards = ({ ...props }: MoviesType) => {
   };
 
   return (
-    <CardsStyles>
+    <CardsStyles  onMouseEnter={handleMouseEnter}
+    onMouseLeave={handleMouseLeave}
+    className={isHovered ? "hovered" : ""}>
       
       <div className="card__header">
         {

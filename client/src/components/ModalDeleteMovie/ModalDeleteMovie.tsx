@@ -44,11 +44,11 @@ export const ModalDeleteMovie = ({ id }: MoviesType) => {
 
       {modalIsOpen && (
         <ModalDeleteContainer>
-          <ModalDeleteContent>
+          <ModalDeleteContent className="modal-content">
             <h2 className="modalDelete__title">Are you sure to delete Movie?</h2>
-            <ModalDeleteButton onClick={handleDelete}>Delete</ModalDeleteButton>
+            <ModalDeleteButton className="modalDelete__btnDelete" onClick={handleDelete}>Delete Movie</ModalDeleteButton>
 
-            <ModalCloseButton onClick={toggleModal}>Close Modal</ModalCloseButton>
+            <ModalCloseButton className="modalDelete__btnClose" onClick={toggleModal}>Close Modal</ModalCloseButton>
           </ModalDeleteContent>
         </ModalDeleteContainer>
       )}

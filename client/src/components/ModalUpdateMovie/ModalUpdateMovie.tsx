@@ -172,7 +172,7 @@ export const ModalUpdateMovie = ({ id, title, score, year, country, genresArray,
                 Update Movie
               </button>
             </form>
-            <ModalUpdateButton onClick={toggleModal}>Close Modal</ModalUpdateButton>
+            <ModalUpdateButton className="modal__btnClose" onClick={toggleModal}>Close Modal</ModalUpdateButton>
           </ModalUpdateContent>
         </ModalUpdateContainer>
       )}
