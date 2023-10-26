@@ -241,7 +241,7 @@ You can find me on LinkedIn, Facebook, and view my other projects on GitHub usin
 
 ### LightHouse test
 
-![Test_Lighthouse.png](client/src/assets/img/Test_Lighthouse.png)
+![Test_Lighthouse.png](client/src/assets/img/Test_Lighthouse_performance.png)
 
 
 Remember, the goal of this project is to learn and practice. Don't hesitate to ask for help if you get stuck.
