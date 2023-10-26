@@ -3,12 +3,19 @@
 
 Welcome to the MovieHub project, an application to keep track of the movies you are watching. This project is designed to help you learn and practice your backend development skills. Throughout the project, you will be adding functionalities and refactoring your code as you learn new concepts.
 
+You can visit this website at : https://react-moviehub-frontend.vercel.app/
+
 
 ![homepage_desktop.png](client/src/assets/img/desktop_image.png)
 
 
 ## Responsive design
+
+### Mobile Version
 ![Responsive_design.png](client/src/assets/img/Responsive_design.png)
+
+
+### Pc Version
 
 ![desktop_mac_image.png](client/src/assets/img/desktop_mac_image.png)
 
